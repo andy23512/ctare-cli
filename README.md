@@ -5,6 +5,7 @@ A vue-cli wrapper for CTARE-style vue
 ## Setup
 - Download [ctare.sh](https://raw.githubusercontent.com/andy23512/ctare-cli/master/ctare.sh)
 ## Usage
+### Generate a CTARE project
 ```
 $ ./path_to_ctare.sh [project name]
 ```
