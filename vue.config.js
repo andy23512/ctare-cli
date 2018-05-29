@@ -75,6 +75,8 @@ module.exports = {
     }
   },
   devServer: {
+    hot: false.
+    inline: true,
     proxy: { '/api': { target: 'http://localhost:8000' } },
   }
 }
