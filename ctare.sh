@@ -17,4 +17,10 @@ else
     \rm -f ./src/router.js
     \perl -ni -e 'print unless /router/' ./src/main.js
 fi
+\mkdir ./src/assets/fonts/
+cd ./src/assets/fonts
+\wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Light.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Light.ttf
+\wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Regular.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Regular.ttf
+\wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Medium.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Medium.ttf
+\wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Bold.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Bold.ttf
 \rm -rf .git ctare-cli ctare.sh
