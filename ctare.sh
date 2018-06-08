@@ -53,7 +53,7 @@ if [[ "$FONTS" == 'Y' ]] ; then
     \wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Medium.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Medium.ttf
     \wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Bold.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Bold.ttf
 else
-    \perl -0 -i -pe "s/@import '~@\/assets\/font\.sass'//; s/Noto Sans TC, //" ./src/assets/global.sass
+    \perl -0 -i -pe "s/\@import\s'~@\/assets\/font\.sass'//; s/Noto Sans TC, //" ./src/assets/global.sass
     \rm -f ./src/assets/font.sass
 fi
 \rm -rf .git ctare-cli ctare.sh
