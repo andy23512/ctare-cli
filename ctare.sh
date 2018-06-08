@@ -1,10 +1,38 @@
 #!/bin/sh
-if [[ $# -eq 0 ]] ; then
-    \echo 'Usage: ./ctare.sh [project name]'
-    \exit 1
+FONTS='Y'
+PROJECT=
+
+function usage()
+{
+    echo "./test.sh [options] project-name"
+    echo "\tOptions:"
+    echo "\t--no-fonts"
+    echo ""
+}
+
+while [ "$1" != "" ]; do
+    PARAM=`echo $1 | awk -F= '{print $1}'`
+    case $PARAM in
+        -h | --help)
+            usage
+            exit
+            ;;
+        --no-fonts)
+            FONTS='N'
+            ;;
+        *)
+            PROJECT=$PARAM
+            ;;
+    esac
+    shift
+done
+
+if [[ "$PROJECT" == '' ]] ; then
+    usage
+    exit
 fi
-\vue create $1
-\cd $1
+\vue create $PROJECT
+\cd $PROJECT
 \yarn add axios jquery semantic-ui-reset
 \yarn add -D awesome-fontmin-loader charactor-scanner imagemin imagemin-gifsicle imagemin-mozjpeg imagemin-pngquant img-loader pug pug-plain-loader
 \perl -0 -i -pe 's/"browserslist": \[.*?\]/"browserslist": [\n    "> 1% in tw",\n    "last 3 versions",\n    "not ie <= 11"\n  ]/s' package.json
@@ -17,10 +45,15 @@ else
     \rm -f ./src/router.js
     \perl -ni -e 'print unless /router/' ./src/main.js
 fi
-\mkdir ./src/assets/fonts/
-cd ./src/assets/fonts
-\wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Light.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Light.ttf
-\wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Regular.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Regular.ttf
-\wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Medium.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Medium.ttf
-\wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Bold.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Bold.ttf
+if [[ "$FONTS" == 'Y' ]] ; then
+    \mkdir ./src/assets/fonts/
+    cd ./src/assets/fonts
+    \wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Light.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Light.ttf
+    \wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Regular.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Regular.ttf
+    \wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Medium.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Medium.ttf
+    \wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Bold.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Bold.ttf
+else
+    \perl -0 -i -pe "s/@import '~@\/assets\/font\.sass'//; s/Noto Sans TC, //" ./src/assets/global.sass
+    \rm -f ./src/assets/font.sass
+fi
 \rm -rf .git ctare-cli ctare.sh
