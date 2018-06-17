@@ -33,7 +33,7 @@ module.exports = {
         .oneOf('fontmin')
           .test(/.ttf$/i)
           .include
-            .add(join(__dirname, 'src/assets/font'))
+            .add(join(__dirname, 'src/assets/fonts'))
             .end()
           .use('awesome-fontmin-loader')
             .loader('awesome-fontmin-loader')
