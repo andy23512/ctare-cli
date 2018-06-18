@@ -45,6 +45,7 @@ else
     \rm -f ./src/router.js
     \perl -ni -e 'print unless /router/' ./src/main.js
 fi
+\rm -rf .git ctare-cli ctare.sh
 if [[ "$FONTS" == 'Y' ]] ; then
     \mkdir ./src/assets/fonts/
     cd ./src/assets/fonts
@@ -56,4 +57,3 @@ else
     \perl -0 -i -pe "s/\@import\s'~@\/assets\/font\.sass'//; s/Noto Sans TC, //" ./src/assets/global.sass
     \rm -f ./src/assets/font.sass
 fi
-\rm -rf .git ctare-cli ctare.sh
