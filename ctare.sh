@@ -45,6 +45,9 @@ else
     \rm -f ./src/router.js
     \perl -ni -e 'print unless /router/' ./src/main.js
 fi
+if [ ! -f ./src/store.js ]; then
+    \perl -ni -e 'print unless /store/' ./src/main.js
+fi
 \rm -rf .git ctare-cli ctare.sh
 if [[ "$FONTS" == 'Y' ]] ; then
     \mkdir ./src/assets/fonts/
