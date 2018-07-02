@@ -52,10 +52,10 @@ fi
 if [[ "$FONTS" == 'Y' ]] ; then
     \mkdir ./src/assets/fonts/
     cd ./src/assets/fonts
-    \wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Light.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Light.ttf
-    \wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Regular.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Regular.ttf
-    \wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Medium.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Medium.ttf
-    \wget https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Bold.ttf 2>/dev/null || \curl -O https://github.com/minjiex/kaigen-gothic/raw/master/dist/TW/KaiGenGothicTW-Bold.ttf
+    \wget https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Light.ttf 2>/dev/null || \curl -O https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Light.ttf
+    \wget https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Regular.ttf 2>/dev/null || \curl -O https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Regular.ttf
+    \wget https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Medium.ttf 2>/dev/null || \curl -O https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Medium.ttf
+    \wget https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Bold.ttf 2>/dev/null || \curl -O https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Bold.ttf
 else
     \perl -0 -i -pe "s/\@import\s'~@\/assets\/font\.sass'//; s/Noto Sans TC, //" ./src/assets/global.sass
     \rm -f ./src/assets/font.sass
