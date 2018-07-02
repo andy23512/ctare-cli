@@ -4,6 +4,11 @@
   background-repeat: $background-repeat
   background-size: $background-size
 
+=circle($size)
+  border-radius: 50%
+  height: $size
+  width: $size
+
 =flexbox($justify-content, $align-items: flex-start, $flex-direction: null, $flex-wrap: null)
   align-items: $align-items
   display: flex
@@ -19,7 +24,10 @@
   line-height: $line-height
   text-indent:  $letter-spacing
 
+=rounded($border-width, $color, $border-radius)
+  border-radius: $border-radius
+  border: $border-width solid $color
+
 =size($width, $height: $width)
   height: $height
   width: $width
-
