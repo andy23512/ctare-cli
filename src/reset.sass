@@ -24,13 +24,6 @@
   body
     overflow-x: hidden
 
-=reset-checkbox
-  input[type=checkbox]
-    flex: none
-    margin-right: .5em
-    margin-top: .25em
-    vertical-align: top
-
 =reset-em
   em
     font-style: normal
@@ -58,6 +51,11 @@
     outline: none
     &::-ms-clear
       display: none
+  input[type=checkbox], input[type=radio]
+    flex: none
+    margin-right: .5em
+    margin-top: .25em
+    vertical-align: top
 
 =reset-p
   p
@@ -97,13 +95,6 @@
       &::before
         content: counter(li)'.'
         margin-right: .5em
-
-=reset-radio
-  input[type=radio]
-    flex: none
-    margin-right: .5em
-    margin-top: .25em
-    vertical-align: top
 
 =reset-ul
   ul
