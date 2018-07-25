@@ -3,6 +3,7 @@
 // load modules
 const child_process = require('child_process');
 const inquirer = require('inquirer');
+const commandExistsSync = require('command-exists').sync
 
 // get project name
 const projectName = process.argv[2];
@@ -12,6 +13,10 @@ if (!projectName) {
 }
 
 // check if vue-cli is globally installed
+if (!commandExistsSync('vue')) {
+  console.log('Error: Vue-cli is not installed in this computer.')
+  process.exit(1)
+}
 
 // get feature config
 process.stdout.write('\033c\033[3J'); // clear screen
