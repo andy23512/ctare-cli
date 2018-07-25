@@ -21,7 +21,7 @@ if (!commandExistsSync('vue')) {
 const version = child_process.execSync('vue -V');
 const mainVersionNum = +version.toString().split('.')[0]
 if (mainVersionNum < 3) {
-  console.log("Error: The version of Installed Vue-cli < 3.0.0")
+  console.log("Error: The version of installed Vue-cli < 3.0.0")
   console.log('Run "yarn global install @vue/cli" or "npm install --global @vue/cli" to install the latest vue-cli.')
   process.exit(1)
 }
