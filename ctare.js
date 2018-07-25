@@ -14,7 +14,15 @@ if (!projectName) {
 
 // check if vue-cli is globally installed
 if (!commandExistsSync('vue')) {
-  console.log('Error: Vue-cli is not installed in this computer.')
+  console.log('Error: Vue-cli is not globally installed in this computer.')
+  console.log('Run "yarn global install @vue/cli" or "npm install --global @vue/cli" to install it.')
+  process.exit(1)
+}
+const version = child_process.execSync('vue -V');
+const mainVersionNum = +version.toString().split('.')[0]
+if (mainVersionNum < 3) {
+  console.log("Error: The version of Installed Vue-cli < 3.0.0")
+  console.log('Run "yarn global install @vue/cli" or "npm install --global @vue/cli" to install the latest vue-cli.')
   process.exit(1)
 }
 
