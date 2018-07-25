@@ -38,17 +38,17 @@ fi
 \perl -0 -i -pe 's/"browserslist": \[.*?\]/"browserslist": [\n    "> 1% in tw",\n    "last 3 versions",\n    "not ie <= 11"\n  ]/s' package.json
 \echo "\n# add by ctare\nsrc/assets/fonts/" >> .gitignore
 \git clone https://github.com/andy23512/ctare-cli/
+\cp ctare-cli/vue.config.js .
 if [ -f ./src/router.js ] ; then
-    \cp -rf ctare-cli/* .
+    \cp -rf ctare-cli/src ./src
 else
-    \cp -rf ctare-cli/* .
+    \cp -rf ctare-cli/src ./src
     \rm -f ./src/router.js
     \perl -ni -e 'print unless /router/' ./src/main.js
 fi
 if [ ! -f ./src/store.js ]; then
     \perl -ni -e 'print unless /store/' ./src/main.js
 fi
-\rm -rf .git ctare-cli ctare.sh
 if [[ "$FONTS" == 'Y' ]] ; then
     \mkdir ./src/assets/fonts/
     cd ./src/assets/fonts

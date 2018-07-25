@@ -1,0 +1,14 @@
+{
+  "name": "ctare-cli",
+  "version": "1.0.0",
+  "repository": "git@github.com:andy23512/ctare-cli.git",
+  "author": "andy23512 <andy23512@gmail.com>",
+  "license": "MIT",
+  "bin": {
+    "ctare": "./ctare.js"
+  }
+  "dependencies": {
+    "command-exists": "^1.2.7",
+    "inquirer": "^6.0.0"
+  }
+}
