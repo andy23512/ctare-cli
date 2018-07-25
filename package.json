@@ -6,7 +6,7 @@
   "license": "MIT",
   "bin": {
     "ctare": "./ctare.js"
-  }
+  },
   "dependencies": {
     "command-exists": "^1.2.7",
     "inquirer": "^6.0.0"
