@@ -2,13 +2,22 @@
 
 // load modules
 const child_process = require('child_process');
-const inquirer = require('inquirer');
 const commandExistsSync = require('command-exists').sync;
+const fs = require('fs');
+const inquirer = require('inquirer');
+const path = require("path");
+const request = require('request');
+const url = require("url");
 const features = require('./lib/features');
-const fs = require('fs')
 
 // global variables
 const selectedFeatures = {}
+const fontsUrls = [
+  "https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Light.ttf",
+  "https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Regular.ttf",
+  "https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Medium.ttf",
+  "https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Bold.ttf"
+];
 
 // get project name
 const projectName = process.argv[2];
@@ -125,8 +134,8 @@ function fetchFiles() {
   .on('close', code => {
     if (code !== 0) {
       console.log("git clone process exited with code " + code);
-      copyFiles()
     }
+    copyFiles()
   })
 }
 
@@ -136,35 +145,19 @@ function copyFiles() {
   child_process.execSync('cp ctare-cli/vue.config.js .');
   child_process.execSync('cp -rf ctare-cli/src .');
   if(!hasRouter) fs.unlinkSync('src/router.js');
-  if(!hasStore) fs.unlinkSync('src/store.js');
+  if(!hasStore) console.log('need to remove store in main.js')
   handleFonts();
 }
 
 function handleFonts() {
-  console.log('nanoha')
   if(selectedFeatures['Noto Sans TC']) {
-    console.log('fate')
-    fs.mkdirSync('./src/assets/fonts/')
-    const fontsUrls = [
-      {host: "raw.githubusercontent.com", path: "/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Light.ttf 2>/dev/null || \curl -O https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Light.ttf"},
-      {host: "raw.githubusercontent.com", path: "/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Regular.ttf 2>/dev/null || \curl -O https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Regular.ttf"},
-      {host: "raw.githubusercontent.com", path: "/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Medium.ttf 2>/dev/null || \curl -O https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Medium.ttf"},
-      {host: "raw.githubusercontent.com", path: "/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Bold.ttf 2>/dev/null || \curl -O https://raw.githubusercontent.com/minjiex/kaigen-gothic/master/dist/TW/KaiGenGothicTW-Bold.ttf"}
-    ]
-    fontsUrls.forEach(downloadFile)
+    if(!fs.existsSync('src/assets/fonts/')) fs.mkdirSync('src/assets/fonts/')
+    fontsUrls.forEach(downloadFonts)
   }
   else fs.unlinkSync('src/assets/font.sass')
 }
 
-function downloadFile({host, path}) {
-  console.log(downloadFile)
-  const http = require('http');
-  const options = { host, port: 443, path };
-  const req = http.get(options, function(response) {
-    // handle the response
-    const res_data = '';
-    response.on('data', chunk => { res_data += chunk; });
-    response.on('end', () => { console.log(res_data) });
-  });
-  req.on('error', (err) => { console.log("Request error: " + err.message); });
+function downloadFonts(targetUrl) {
+  const fileName = path.basename(url.parse(targetUrl).pathname);
+  request(targetUrl).pipe(fs.createWriteStream(path.join('src/assets/fonts/', fileName)));
 }
