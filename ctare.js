@@ -17,6 +17,10 @@ const files = {
   'global.sass': {
     path: 'src/assets/global.sass',
     toRemove: []
+  },
+  'vue.config.js': {
+    path: 'vue.config.js',
+    toRemove: []
   }
 };
 
@@ -117,8 +121,8 @@ function installModules() {
 
   // collect modules that need to installed
   const deps = features.modules
-    .filter(c => selectedFeatures[c.name])
-    .map(c => c.name);
+    .filter(m => selectedFeatures[m.name])
+    .reduce((acc, m) => acc.concat(m.packages), []);
   child_process
     .spawn(installDepsProgram, [...installDepsArgs, ...deps], {
       shell: true,
@@ -194,7 +198,7 @@ function copyFiles() {
       fs.unlinkSync('src/assets/font.sass');
       files['global.sass'].toRemove.push('font');
     }
-    removeFiles();
+    handleModules();
   }
 
   function downloadFonts(targetUrl) {
@@ -202,6 +206,14 @@ function copyFiles() {
     request(targetUrl).pipe(
       fs.createWriteStream(path.join('src/assets/fonts/', fileName))
     );
+  }
+
+  function handleModules() {
+    features.modules.forEach(f => {
+      if(!selectedFeatures[f.name] || !f.affectedFile) return;
+      files[f.affectedFile].toRemove.push(f.name)
+    })
+    removeFiles()
   }
 
   function removeFiles() {
