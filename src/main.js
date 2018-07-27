@@ -12,7 +12,7 @@ import router from '@/router' //[[router]]
 import store from '@/store' //[[store]]
 
 Vue.use(VueRx) //[[rxjs]]
-Vue.use(VueAnalytics, { id: 'UA-XXX-X' }) //[[vue-analystics]]
+Vue.use(VueAnalytics, { id: 'UA-XXX-X' }) //[[vue-analytics]]
 Vue.use(VueScrollTo) //[[vue-scrollto]]
 
 Vue.config.productionTip = false
