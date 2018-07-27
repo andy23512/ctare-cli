@@ -12,8 +12,7 @@ const features = require('./lib/features');
 const files = {
   'main.js': {
     path: 'src/main.js',
-    type: 'js',
-    toRemove: [],
+    toRemove: []
   },
   'global.sass': {
     path: 'src/assets/global.sass',
@@ -210,7 +209,7 @@ function copyFiles() {
       let fileContent = fs.readFileSync(f.path, { encoding: 'utf8' });
       for (const t of f.toRemove)
         fileContent = fileContent.replace(
-          new RegExp(`^.*\[\[${t}\]\].*$`, 'gm'),
+          new RegExp(`\\n.*\\[\\[${t}\\]\\]`, 'g'),
           ''
         );
       fileContent = fileContent.replace(/ \/\/\[\[.*$/gm, '');
