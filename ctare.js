@@ -210,7 +210,7 @@ function copyFiles() {
 
   function handleModules() {
     features.modules.forEach(f => {
-      if(!selectedFeatures[f.name] || !f.affectedFile) return;
+      if(selectedFeatures[f.name] || !f.affectedFile) return;
       files[f.affectedFile].toRemove.push(f.name)
     })
     removeFiles()
