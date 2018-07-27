@@ -5,10 +5,13 @@ A vue-cli wrapper for CTARE-style vue
 ## Requirement
 - (global module) [@vue/cli@3](https://www.npmjs.com/package/@vue/cli)
 - yarn
-## Setup
-- Download [ctare.sh](https://raw.githubusercontent.com/andy23512/ctare-cli/master/ctare.sh)
+## Install
+```
+npm i -g andy23512/ctare-cli
+(or yarn global add andy23512/ctare-cli)
+```
 ## Usage
 ### Generate a CTARE project
 ```
-$ ./path_to_ctare.sh [project name]
+$ ctare [project name]
 ```
