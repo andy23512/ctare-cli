@@ -9,7 +9,7 @@ const request = require('request');
 const url = require('url');
 
 const features = require('./lib/features');
-const depDeps = require('./lib/dev-deps');
+const devDeps = require('./lib/dev-deps');
 const fontUrls = require('./lib/font-urls');
 
 // global variables
@@ -36,13 +36,14 @@ getProjectName()
   .then(runVueCli)
   .then(getCtareConfig)
   .then(changeDirToProject)
+  .then(installModules)
   .then(editBrowsersList)
   .then(cloneCtareSource)
   .then(copyFiles)
   .then(handleFonts)
   .then(handleModules)
   .then(removeFiles)
-  .catch(err => console.error(err));
+  .catch(console.error);
 
 function getProjectName() {
   return new Promise((resolve, reject) => {
@@ -218,6 +219,6 @@ function promiseSpawn(command, args) {
   return new Promise((resolve, reject) => {
     child_process
       .spawn(command, args, { shell: true, stdio: 'inherit' })
-      .on('close', code => (code == 0 ? resolve() : reject()));
+      .on('close', code => (code === 0 ? resolve() : reject()));
   });
 }
