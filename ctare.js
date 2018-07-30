@@ -110,9 +110,11 @@ function changeDirToProject() {
 
 function installDeps(program) {
   return (args, deps) => {
-    return promiseSpawn(program, [...args, ...deps]).catch(code => {
-      throw new Error('Dependencies install process exited with code ' + code);
-    });
+    return () => {
+      return promiseSpawn(program, [...args, ...deps]).catch(code => {
+        throw new Error('Dependencies install process exited with code ' + code);
+      });
+    }
   };
 }
 
@@ -128,7 +130,7 @@ function installModules() {
   const deps = features.modules
     .filter(m => selectedFeatures[m.name])
     .reduce((acc, m) => acc.concat(m.packages), []);
-  return install(installDepsArgs, deps).then(
+  return install(installDepsArgs, deps)().then(
     install(installDevDepsArgs, devDeps)
   );
 }
@@ -175,6 +177,7 @@ function copyFiles() {
   if (!hasStore) {
     files['main.js'].toRemove.push('store');
   }
+  child_process.execSync('\\rm -rf ctare-cli/');
 }
 
 function handleFonts() {
