@@ -111,9 +111,14 @@ function changeDirToProject() {
 function installDeps(program) {
   return (args, deps) => {
     return () => {
-      return promiseSpawn(program, [...args, ...deps]).catch(code => {
-        throw new Error('Dependencies install process exited with code ' + code);
-      });
+      if(deps.length > 0) {
+        return promiseSpawn(program, [...args, ...deps]).catch(code => {
+          throw new Error('Dependencies install process exited with code ' + code);
+        });
+      }
+      else {
+        return Promise.resolve();
+      }
     }
   };
 }
