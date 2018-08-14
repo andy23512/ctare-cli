@@ -141,23 +141,17 @@ function installModules() {
 }
 
 function editBrowsersList() {
+  const browserslist = [
+    '> 1% in tw',
+    'last 3 versions',
+    'not ie <= 11'
+  ];
   return new Promise((resolve, reject) => {
-    fs.readFile('package.json', (err, data) => {
-      !err ? resolve(JSON.parse(data)) : reject(err);
-    });
-  }).then(packageJson => {
-    packageJson.browserslist = [
-      '> 1% in tw',
-      'last 3 versions',
-      'not ie <= 11'
-    ];
-    return new Promise((resolve, reject) => {
-      fs.writeFile(
-        'package.json',
-        JSON.stringify(packageJson, null, 2),
-        err => (!err ? resolve() : reject(err))
-      );
-    });
+    fs.writeFile(
+      '.browserslistrc',
+      browserslist.join('\n'),
+      err => (!err ? resolve() : reject(err))
+    );
   });
 }
 
