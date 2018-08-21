@@ -174,6 +174,7 @@ function copyFiles() {
     files['main.js'].toRemove.push('router');
   }
   if (!hasStore) {
+    fs.unlinkSync('src/store.js');
     files['main.js'].toRemove.push('store');
   }
   child_process.execSync('\\rm -rf ctare-cli/');
