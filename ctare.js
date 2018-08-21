@@ -36,13 +36,14 @@ getProjectName()
   .then(runVueCli)
   .then(getCtareConfig)
   .then(changeDirToProject)
+  .then(removeUnneedFile)
   .then(installModules)
   .then(editBrowsersList)
   .then(cloneCtareSource)
   .then(copyFiles)
   .then(handleFonts)
   .then(handleModules)
-  .then(removeFiles)
+  .then(removeUnneedFeautesImport)
   .catch(console.error);
 
 function getProjectName() {
@@ -106,6 +107,11 @@ function getCtareConfig() {
 
 function changeDirToProject() {
   return Promise.resolve(process.chdir(projectName));
+}
+
+function removeUnneedFile() {
+  fs.unlinkSync('src/components/HelloWorld.vue')
+  fs.unlinkSync('src/assets/logo.png')
 }
 
 function installDeps(program) {
@@ -205,7 +211,7 @@ function handleModules() {
   });
 }
 
-function removeFiles() {
+function removeUnneedFeautesImport() {
   Object.values(files).forEach(f => {
     let fileContent = fs.readFileSync(f.path, { encoding: 'utf8' });
     for (const t of f.toRemove)
