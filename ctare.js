@@ -118,6 +118,7 @@ function changeDirToProject() {
 }
 
 function removeUnneedFile() {
+  console.log('remove')
   fs.unlinkSync('src/components/HelloWorld.vue')
   fs.unlinkSync('src/assets/logo.png')
 }
@@ -143,7 +144,7 @@ function copyFiles() {
   if (!hasStore) {
     fs.unlinkSync('src/store.js');
     files['main.js'].toRemove.push('store');
-    files['App.js'].toRemove.push('query-string');
+    files['App.vue'].toRemove.push('query-string');
     files['store.js'].toRemove.push('query-string');
   }
   child_process.execSync('\\rm -rf ctare-cli/');
