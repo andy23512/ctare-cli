@@ -6,6 +6,7 @@ const fs = require('fs');
 const inquirer = require('inquirer');
 const path = require('path');
 const request = require('request');
+const rimraf = require('rimraf');
 const url = require('url');
 
 const features = require('./lib/features');
@@ -118,9 +119,9 @@ function changeDirToProject() {
 }
 
 function removeUnneedFile() {
-  console.log('remove')
   fs.unlinkSync('src/components/HelloWorld.vue')
   fs.unlinkSync('src/assets/logo.png')
+  rimraf.sync('src/views/');
 }
 
 function cloneCtareSource() {
@@ -139,12 +140,12 @@ function copyFiles() {
   child_process.execSync('cp -rf ctare-cli/src .');
   if (!hasRouter) {
     fs.unlinkSync('src/router.js');
+    rimraf.sync('src/views/');
     files['main.js'].toRemove.push('router');
     files['App.vue'].toRemove.push('router');
   }
   if (!hasStore) {
     fs.unlinkSync('src/store.js');
-    fs.unlinkSync('src/views/');
     files['main.js'].toRemove.push('store');
     files['App.vue'].toRemove.push('query-string');
     files['store.js'].toRemove.push('query-string');

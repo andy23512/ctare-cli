@@ -10,6 +10,7 @@
   "dependencies": {
     "command-exists": "^1.2.7",
     "inquirer": "^6.0.0",
-    "request": "^2.87.0"
+    "request": "^2.87.0",
+    "rimraf": "^2.6.2"
   }
 }
