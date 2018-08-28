@@ -25,6 +25,10 @@ const files = {
   'vue.config.js': {
     path: 'vue.config.js',
     toRemove: []
+  },
+  'App.vue': {
+    path: 'src/App.vue',
+    toRemove: []
   }
 };
 const selectedFeatures = {};

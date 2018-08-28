@@ -3,14 +3,14 @@
 </template>
 
 <script>
-import query from 'query-string'
+import query from 'query-string' //[[query-string]]
 
 export default {
   name: 'App',
-  created() {
-    $(window).resize(() => this.$store.commit('checkMobile')).resize()
-    this.$store.commit('saveUtm', query.parse(location.search))
-  },
+  created() { //[[query-string]]
+    $(window).resize(() => this.$store.commit('checkMobile')).resize() //[[query-string]]
+    this.$store.commit('saveUtm', query.parse(location.search)) //[[query-string]]
+  }, //[[query-string]]
 }
 </script>
 
