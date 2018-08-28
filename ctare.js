@@ -224,6 +224,9 @@ function handleModules() {
 
 function removeUnneedFeautesImport() {
   Object.values(files).forEach(f => {
+    if (!fs.existsSync(f.path)) {
+      return;
+    }
     let fileContent = fs.readFileSync(f.path, { encoding: 'utf8' });
     for (const t of f.toRemove)
       fileContent = fileContent.replace(
