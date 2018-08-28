@@ -29,6 +29,10 @@ const files = {
   'App.vue': {
     path: 'src/App.vue',
     toRemove: []
+  },
+  'store.js': {
+    path: 'src/store.js',
+    toRemove: []
   }
 };
 const selectedFeatures = {};
@@ -41,10 +45,10 @@ getProjectName()
   .then(getCtareConfig)
   .then(changeDirToProject)
   .then(removeUnneedFile)
-  .then(installModules)
-  .then(editBrowsersList)
   .then(cloneCtareSource)
   .then(copyFiles)
+  .then(installModules)
+  .then(editBrowsersList)
   .then(handleFonts)
   .then(handleModules)
   .then(removeUnneedFeautesImport)
@@ -118,6 +122,32 @@ function removeUnneedFile() {
   fs.unlinkSync('src/assets/logo.png')
 }
 
+function cloneCtareSource() {
+  return promiseSpawn('git', [
+    'clone',
+    'https://github.com/andy23512/ctare-cli/'
+  ]).catch(code => {
+    throw new Error('Clone CTARE github repo exited with error code' + code);
+  });
+}
+
+function copyFiles() {
+  const hasRouter = fs.existsSync('./src/router.js');
+  const hasStore = fs.existsSync('./src/store.js');
+  child_process.execSync('cp ctare-cli/vue.config.js .');
+  child_process.execSync('cp -rf ctare-cli/src .');
+  if (!hasRouter) {
+    fs.unlinkSync('src/router.js');
+    files['main.js'].toRemove.push('router');
+  }
+  if (!hasStore) {
+    fs.unlinkSync('src/store.js');
+    files['main.js'].toRemove.push('store');
+    selectedFeatures['query-string'] = false;
+  }
+  child_process.execSync('\\rm -rf ctare-cli/');
+}
+
 function installDeps(program) {
   return (args, deps) => {
     return () => {
@@ -165,31 +195,6 @@ function editBrowsersList() {
   });
 }
 
-function cloneCtareSource() {
-  return promiseSpawn('git', [
-    'clone',
-    'https://github.com/andy23512/ctare-cli/'
-  ]).catch(code => {
-    throw new Error('Clone CTARE github repo exited with error code' + code);
-  });
-}
-
-function copyFiles() {
-  const hasRouter = fs.existsSync('./src/router.js');
-  const hasStore = fs.existsSync('./src/store.js');
-  child_process.execSync('cp ctare-cli/vue.config.js .');
-  child_process.execSync('cp -rf ctare-cli/src .');
-  if (!hasRouter) {
-    fs.unlinkSync('src/router.js');
-    files['main.js'].toRemove.push('router');
-  }
-  if (!hasStore) {
-    fs.unlinkSync('src/store.js');
-    files['main.js'].toRemove.push('store');
-  }
-  child_process.execSync('\\rm -rf ctare-cli/');
-}
-
 function handleFonts() {
   if (selectedFeatures['Noto Sans TC']) {
     fs.appendFileSync('.gitignore', '\n# add by ctare\nsrc/assets/fonts/');
@@ -210,8 +215,10 @@ function downloadFont(targetUrl) {
 
 function handleModules() {
   features.modules.forEach(f => {
-    if (selectedFeatures[f.name] || !f.affectedFile) return;
-    files[f.affectedFile].toRemove.push(f.name);
+    if (selectedFeatures[f.name] || !f.affectedFiles) return;
+    f.affectedFiles.forEach(file => {
+      files[file].toRemove.push(f.name);
+    })
   });
 }
 

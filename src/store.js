@@ -5,24 +5,24 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    mobile: true,
-    utm_source: '',
-    utm_medium: '',
-    utm_campaign: '',
-    utm_term: '',
-    utm_content: '',
+    mobile: true, //[[query-string]]
+    utm_source: '', //[[query-string]]
+    utm_medium: '', //[[query-string]]
+    utm_campaign: '', //[[query-string]]
+    utm_term: '', //[[query-string]]
+    utm_content: '', //[[query-string]]
   },
   mutations: {
-    checkMobile(state) {
-      state.mobile = $(window).width() < 992
-    },
-    saveUtm(state, query) {
-      state.utm_source = query.utm_source ? query.utm_source : ''
-      state.utm_medium = query.utm_medium ? query.utm_medium : ''
-      state.utm_campaign = query.utm_campaign ? query.utm_campaign : ''
-      state.utm_term = query.utm_term ? query.utm_term : ''
-      state.utm_content = query.utm_content ? query.utm_content : ''
-    },
+    checkMobile(state) { //[[query-string]]
+      state.mobile = $(window).width() < 992 //[[query-string]]
+    }, //[[query-string]]
+    saveUtm(state, query) { //[[query-string]]
+      state.utm_source = query.utm_source ? query.utm_source : '' //[[query-string]]
+      state.utm_medium = query.utm_medium ? query.utm_medium : '' //[[query-string]]
+      state.utm_campaign = query.utm_campaign ? query.utm_campaign : '' //[[query-string]]
+      state.utm_term = query.utm_term ? query.utm_term : '' //[[query-string]]
+      state.utm_content = query.utm_content ? query.utm_content : '' //[[query-string]]
+    }, //[[query-string]]
   },
   actions: {
 
