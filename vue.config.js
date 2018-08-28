@@ -14,9 +14,13 @@ module.exports = {
     config
       .plugin('provide')
       .use(webpack.ProvidePlugin, [{
-        $: 'jquery/dist/jquery.slim.js', //[[jquery]]
-        jQuery: 'jquery/dist/jquery.slim.js', //[[jquery]]
-        R: 'ramda', //[[ramdajs]]
+        //[[jquery]]
+        $: 'jquery/dist/jquery.slim.js',
+        jQuery: 'jquery/dist/jquery.slim.js',
+        //[[/jquery]]
+        //[[ramdajs]]
+        R: 'ramda',
+        //[[/ramdajs]]
       }])
 
     if(config.get('mode') === 'production') {
