@@ -41,11 +41,11 @@ Vue.prototype.$http = axios
 //[[/axios]]
 
 new Vue({
-  //[[router]]
+//[[router]]
   router,
-  //[[/router]]
-  //[[store]]
+//[[/router]]
+//[[store]]
   store,
-  //[[/store]]
+//[[/store]]
   render: h => h(App),
 }).$mount('#app')
