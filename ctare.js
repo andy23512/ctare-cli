@@ -37,14 +37,16 @@ const files = {
   }
 };
 const selectedFeatures = {};
+const setting = {};
 let projectName = '';
 
 getProjectName()
   .then(() => commandExists('vue'))
   .then(checkVueCliVersion)
   .then(runVueCli)
-  .then(getCtareConfig)
   .then(changeDirToProject)
+  .then(getProjectSetting)
+  .then(getCtareConfig)
   .then(removeUnneedFile)
   .then(cloneCtareSource)
   .then(copyFiles)
@@ -89,8 +91,22 @@ function runVueCli() {
   });
 }
 
+function getProjectSetting() {
+  setting.router = fs.existsSync('./src/router.js');
+  setting.store = fs.existsSync('./src/store.js');
+}
+
 function getCtareConfig() {
   process.stdout.write('\033c\033[3J'); // clear screen
+  const selectableFunctions = features.functions.filter((f) => {
+    if(f.depend_on) {
+      return f.depend_on.every(d => setting[d])
+    }
+    return true
+  })
+  if (selectableFunctions.length > 0) {
+    selectableFunctions.unshift(new inquirer.Separator(' = Functions = '))
+  }
   return inquirer
     .prompt([
       {
@@ -101,6 +117,7 @@ function getCtareConfig() {
         choices: [
           new inquirer.Separator(' = Fonts = '),
           ...features.fonts,
+          ...selectableFunctions,
           new inquirer.Separator(' = Modules = '),
           ...features.modules
         ]
@@ -178,6 +195,7 @@ function installModules() {
 
   // collect modules that need to installed
   const deps = features.modules
+    .concat(features.functions)
     .filter(m => selectedFeatures[m.name])
     .reduce((acc, m) => acc.concat(m.packages), []);
   return install(installDepsArgs, deps)().then(
@@ -219,7 +237,9 @@ function downloadFont(targetUrl) {
 }
 
 function handleModules() {
-  features.modules.forEach(f => {
+  features.modules
+  .concat(features.functions)
+  .forEach(f => {
     if (selectedFeatures[f.name] || !f.affectedFiles) return;
     f.affectedFiles.forEach(file => {
       files[file].toRemove.push(f.name);

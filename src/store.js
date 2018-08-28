@@ -13,9 +13,9 @@ export default new Vuex.Store({
     utm_content: '', //[[query-string]]
   },
   mutations: {
-    checkMobile(state) { //[[query-string]]
-      state.mobile = $(window).width() < 992 //[[query-string]]
-    }, //[[query-string]]
+    checkMobile(state) { //[[check-mobile]]
+      state.mobile = $(window).width() < 992 //[[check-mobile]]
+    }, //[[check-mobile]]
     saveUtm(state, query) { //[[query-string]]
       state.utm_source = query.utm_source ? query.utm_source : '' //[[query-string]]
       state.utm_medium = query.utm_medium ? query.utm_medium : '' //[[query-string]]
