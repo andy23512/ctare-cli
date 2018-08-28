@@ -1,9 +1,9 @@
 <template lang="pug">
 #v-app.app
   | App
-//[[router]]
+  //[[router]]
   router-view
-//[[/router]]
+  //[[/router]]
 </template>
 
 <script>
@@ -14,9 +14,9 @@ import query from 'query-string'
 export default {
   name: 'App',
   created() {
-//[[check-mobile]]
+    //[[check-mobile]]
     $(window).resize(() => this.$store.commit('checkMobile')).resize()
-//[[/check-mobile]]
+    //[[/check-mobile]]
     this.$store.commit('saveUtm', query.parse(location.search))
   },
 }
