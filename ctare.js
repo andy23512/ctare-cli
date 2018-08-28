@@ -140,9 +140,11 @@ function copyFiles() {
   if (!hasRouter) {
     fs.unlinkSync('src/router.js');
     files['main.js'].toRemove.push('router');
+    files['App.vue'].toRemove.push('router');
   }
   if (!hasStore) {
     fs.unlinkSync('src/store.js');
+    fs.unlinkSync('src/views/');
     files['main.js'].toRemove.push('store');
     files['App.vue'].toRemove.push('query-string');
     files['store.js'].toRemove.push('query-string');
