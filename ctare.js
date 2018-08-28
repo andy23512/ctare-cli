@@ -143,7 +143,8 @@ function copyFiles() {
   if (!hasStore) {
     fs.unlinkSync('src/store.js');
     files['main.js'].toRemove.push('store');
-    selectedFeatures['query-string'] = false;
+    files['App.js'].toRemove.push('query-string');
+    files['store.js'].toRemove.push('query-string');
   }
   child_process.execSync('\\rm -rf ctare-cli/');
 }
