@@ -113,7 +113,7 @@ function getCtareConfig() {
         type: 'checkbox',
         message: 'Check the features needed for your project: ',
         name: 'features',
-        pageSize: 12,
+        pageSize: 20,
         choices: [
           new inquirer.Separator(' = Fonts = '),
           ...features.fonts,
