@@ -16,6 +16,7 @@ Vue.use(VueAnalytics, { id: 'UA-XXX-X' }) //[[vue-analytics]]
 Vue.use(VueScrollTo) //[[vue-scrollto]]
 
 Vue.config.productionTip = false
+Vue.http = axios //[[axios]]
 Vue.prototype.$http = axios //[[axios]]
 
 new Vue({
