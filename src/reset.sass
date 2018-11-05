@@ -53,10 +53,12 @@
     &::-ms-clear
       display: none
   input[type=checkbox], input[type=radio]
+    cursor: pointer
     flex: none
     margin-right: .5em
-    margin-top: .25em
     vertical-align: top
+  input[type=checkbox]:disabled, input[type=radio]:disabled
+    pointer-events: none
 
 =reset-p
   p
