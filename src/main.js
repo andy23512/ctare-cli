@@ -1,5 +1,5 @@
 import 'semantic-ui-reset/reset.css' //[[semantic-ui-reset]]
-import '@/assets/global.sass'
+import '@/global.sass'
 
 import Vue from 'vue'
 import axios from 'axios' //[[axios]]
