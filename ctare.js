@@ -223,6 +223,7 @@ function handleFonts() {
     fs.appendFileSync('.gitignore', '\n# add by ctare\nsrc/assets/fonts/');
     if (!fs.existsSync('src/assets/fonts/')) fs.mkdirSync('src/assets/fonts/');
     fontUrls.forEach(downloadFont);
+    files['global.sass'].toRemove.push('!font');
   } else {
     fs.unlinkSync('src/assets/font.sass');
     files['global.sass'].toRemove.push('font');
