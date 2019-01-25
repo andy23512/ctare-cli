@@ -1,4 +1,4 @@
-import 'semantic-ui-reset/reset.css' //[[semantic-ui-reset]]
+import 'normalize.css/normalize.css' //[[normalize.css]]
 import '@/global.sass'
 
 import Vue from 'vue'
