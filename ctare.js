@@ -20,7 +20,7 @@ const files = {
     toRemove: []
   },
   'global.sass': {
-    path: 'src/assets/global.sass',
+    path: 'src/global.sass',
     toRemove: []
   },
   'vue.config.js': {
