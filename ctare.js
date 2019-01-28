@@ -224,9 +224,11 @@ function handleFonts() {
     if (!fs.existsSync('src/assets/fonts/')) fs.mkdirSync('src/assets/fonts/');
     fontUrls.forEach(downloadFont);
     files['global.sass'].toRemove.push('!font');
+    files['vue.config.js'].toRemove.push('!font');
   } else {
     fs.unlinkSync('src/assets/font.sass');
     files['global.sass'].toRemove.push('font');
+    files['vue.config.js'].toRemove.push('font');
   }
 }
 
