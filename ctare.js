@@ -241,10 +241,24 @@ function handleModules() {
   features.modules
   .concat(features.functions)
   .forEach(f => {
-    if (selectedFeatures[f.name] || !f.affectedFiles) return;
-    f.affectedFiles.forEach(file => {
-      files[file].toRemove.push(f.name);
-    })
+    if (!f.affectedFiles) return;
+    if (selectedFeatures[f.name]) {
+      if (f.cond) {
+        f.cond.forEach(c => {
+          if(selectedFeatures[c]) {
+            f.affectedFiles.forEach(file => files[file].toRemove.push(`${f.name}|!${c}`))
+          }
+          else {
+            f.affectedFiles.forEach(file => files[file].toRemove.push(`${f.name}|${c}`))
+          }
+        })
+      }
+    }
+    else {
+      f.affectedFiles.forEach(file => {
+        files[file].toRemove.push(f.name);
+      })
+    }
   });
 }
 
@@ -256,7 +270,7 @@ function removeUnneedFeautesImport() {
     let fileContent = fs.readFileSync(f.path, { encoding: 'utf8' });
     for (const t of f.toRemove)
       fileContent = fileContent.replace(
-        new RegExp(`(\\n|^).*\\[\\[${t}\\]\\]`, 'g'),
+        new RegExp(`(\\n|^).*\\[\\[${t}\|?.*?\\]\\]`, 'g'),
         ''
       );
     fileContent = fileContent.replace(/ \/\/\[\[.*$/gm, '');
