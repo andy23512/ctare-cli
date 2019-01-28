@@ -5,14 +5,14 @@
 </template>
 
 <script>
-import query from 'query-string' //[[query-string]]
+import query from 'query-string' //[[Save UTM]]
 
 export default {
   name: 'App',
-  created() { //[[query-string]]
-    $(window).resize(() => this.$store.commit('checkMobile')).resize() //[[check-mobile]]
-    this.$store.commit('saveUtm', query.parse(location.search)) //[[query-string]]
-  }, //[[query-string]]
+  created() {
+    $(window).resize(() => this.$store.commit('checkMobile')).resize() //[[Check Mobile]]
+    this.$store.commit('saveUtm', query.parse(location.search)) //[[Save UTM]]
+  },
 }
 </script>
 
