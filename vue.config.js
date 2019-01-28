@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 
 module.exports = {
-  baseUrl: '/',
+  publicPath: '/',
   outputDir: 'dist',
   css: {
     loaderOptions: {
