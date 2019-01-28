@@ -53,24 +53,24 @@ module.exports = {
               name: 'fonts/[name].[hash:8].[ext]' //[[font]]
             }) //[[font]]
       //[[font]]
-      config.module.rules.delete('images')
-      config.module.rule('images')
-        .test(/\.(png|jpe?g|gif)(\?.*)?$/)
-        .use('file-loader')
-          .loader('file-loader')
-          .options({
-            name: `img/[name].[hash:8].[ext]`
-          })
-          .end()
-        .use('img-loader')
-          .loader('img-loader')
-          .options({
-            plugins: [
-              require('imagemin-gifsicle')(),
-              require('imagemin-mozjpeg')(),
-              require('imagemin-pngquant')(),
-            ]
-          })
+      config.module.rules.delete('images') //[[Image Compression]]
+      config.module.rule('images') //[[Image Compression]]
+        .test(/\.(png|jpe?g|gif)(\?.*)?$/) //[[Image Compression]]
+        .use('file-loader') //[[Image Compression]]
+          .loader('file-loader') //[[Image Compression]]
+          .options({ //[[Image Compression]]
+            name: `img/[name].[hash:8].[ext]` //[[Image Compression]]
+          }) //[[Image Compression]]
+          .end() //[[Image Compression]]
+        .use('img-loader') //[[Image Compression]]
+          .loader('img-loader') //[[Image Compression]]
+          .options({ //[[Image Compression]]
+            plugins: [ //[[Image Compression]]
+              require('imagemin-gifsicle')(), //[[Image Compression]]
+              require('imagemin-mozjpeg')(), //[[Image Compression]]
+              require('imagemin-pngquant')(), //[[Image Compression]]
+            ] //[[Image Compression]]
+          }) //[[Image Compression]]
     }
   },
   devServer: {
