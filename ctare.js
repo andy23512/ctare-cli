@@ -10,7 +10,7 @@ const rimraf = require('rimraf');
 const url = require('url');
 
 const features = require('./lib/features');
-const devDeps = require('./lib/dev-deps');
+const fixedDevDeps = require('./lib/dev-deps');
 const fontUrls = require('./lib/font-urls');
 
 // global variables
@@ -192,10 +192,12 @@ function installModules() {
   const install = installDeps(installDepsProgram);
 
   // collect modules that need to installed
-  const deps = features.modules
+  const installed = features.modules
     .concat(features.functions)
+    .concat(features.fonts)
     .filter(m => selectedFeatures[m.name])
-    .reduce((acc, m) => acc.concat(m.packages), []);
+  const deps = installed.reduce((acc, m) => acc.concat(m.packages), []);
+  const devDeps = installed.reduce((acc, m) => acc.concat(m.devPackages), fixedDevDeps);
   return install(installDepsArgs, deps)().then(
     install(installDevDepsArgs, devDeps)
   );

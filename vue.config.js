@@ -11,12 +11,12 @@ module.exports = {
     },
   },
   chainWebpack: (config) => {
-    config
-      .plugin('provide')
-      .use(webpack.ProvidePlugin, [{
+    config //[[jquery]]
+      .plugin('provide') //[[jquery]]
+      .use(webpack.ProvidePlugin, [{ //[[jquery]]
         $: 'jquery/dist/jquery.slim.js', //[[jquery]]
         jQuery: 'jquery/dist/jquery.slim.js', //[[jquery]]
-      }])
+      }]) //[[jquery]]
 
     if(config.get('mode') === 'production') {
       const { join } = require('path')
@@ -27,31 +27,31 @@ module.exports = {
         sync: true,
       }).join('')
 
-      config.module.rules.delete('fonts')
-      config.module.rule('fonts')
-        .test(/\.(woff2?|eot|ttf|otf)(\?.*)?$/i)
-        .oneOf('fontmin')
-          .test(/.ttf$/i)
-          .include
-            .add(join(__dirname, 'src/assets/fonts'))
-            .end()
-          .use('awesome-fontmin-loader')
-            .loader('awesome-fontmin-loader')
-            .options({
-              context: config.get('context'),
-              text: text,
-              limit: 10000,
-              name: 'fonts/[name].[hash:8].[ext]',
-            })
-            .end()
-          .end()
-        .oneOf('other-fonts')
-          .use('url-loader')
-            .loader('url-loader')
-            .options({
-              limit: 10000,
-              name: 'fonts/[name].[hash:8].[ext]'
-            })
+      config.module.rules.delete('fonts') //[[Noto Sans TC]]
+      config.module.rule('fonts') //[[Noto Sans TC]]
+        .test(/\.(woff2?|eot|ttf|otf)(\?.*)?$/i) //[[Noto Sans TC]]
+        .oneOf('fontmin') //[[Noto Sans TC]]
+          .test(/.ttf$/i) //[[Noto Sans TC]]
+          .include //[[Noto Sans TC]]
+            .add(join(__dirname, 'src/assets/fonts')) //[[Noto Sans TC]]
+            .end() //[[Noto Sans TC]]
+          .use('awesome-fontmin-loader') //[[Noto Sans TC]]
+            .loader('awesome-fontmin-loader') //[[Noto Sans TC]]
+            .options({ //[[Noto Sans TC]]
+              context: config.get('context'), //[[Noto Sans TC]]
+              text: text, //[[Noto Sans TC]]
+              limit: 10000, //[[Noto Sans TC]]
+              name: 'fonts/[name].[hash:8].[ext]', //[[Noto Sans TC]]
+            }) //[[Noto Sans TC]]
+            .end() //[[Noto Sans TC]]
+          .end() //[[Noto Sans TC]]
+        .oneOf('other-fonts') //[[Noto Sans TC]]
+          .use('url-loader') //[[Noto Sans TC]]
+            .loader('url-loader') //[[Noto Sans TC]]
+            .options({ //[[Noto Sans TC]]
+              limit: 10000, //[[Noto Sans TC]]
+              name: 'fonts/[name].[hash:8].[ext]' //[[Noto Sans TC]]
+            }) //[[Noto Sans TC]]
 
       config.module.rules.delete('images')
       config.module.rule('images')
