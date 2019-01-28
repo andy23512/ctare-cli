@@ -164,8 +164,6 @@ function copyFiles() {
   if (!hasStore) {
     fs.unlinkSync('src/store.js');
     files['main.js'].toRemove.push('store');
-    files['App.vue'].toRemove.push('query-string');
-    files['store.js'].toRemove.push('query-string');
   }
   child_process.execSync('\\rm -rf ctare-cli/');
 }
@@ -245,7 +243,7 @@ function handleModules() {
     if (selectedFeatures[f.name]) {
       if (f.cond) {
         f.cond.forEach(c => {
-          if(selectedFeatures[c]) {
+          if(selectedFeatures[c] || setting[c]) {
             f.affectedFiles.forEach(file => files[file].toRemove.push(`${f.name},!${c}`))
           }
           else {
