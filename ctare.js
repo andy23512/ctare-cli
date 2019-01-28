@@ -270,7 +270,7 @@ function removeUnneedFeautesImport() {
     let fileContent = fs.readFileSync(f.path, { encoding: 'utf8' });
     for (const t of f.toRemove)
       fileContent = fileContent.replace(
-        new RegExp(`(\\n|^).*\\[\\[${t}\|?.*?\\]\\]`, 'g'),
+        new RegExp(`(\\n|^).*\\[\\[${t}(\|.*?)?\\]\\]`, 'g'),
         ''
       );
     fileContent = fileContent.replace(/ \/\/\[\[.*$/gm, '');
