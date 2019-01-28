@@ -19,14 +19,14 @@ module.exports = {
       }]) //[[jquery]]
 
     if(config.get('mode') === 'production') {
-      const { join } = require('path')
-      const scanner = require('charactor-scanner')
-      const text = scanner({
-        dir: join(__dirname, 'src'),
-        ext: 'vue',
-        sync: true,
-      }).join('')
-
+      const { join } = require('path') //[[font]]
+      const scanner = require('charactor-scanner') //[[font]]
+      const text = scanner({ //[[font]]
+        dir: join(__dirname, 'src'), //[[font]]
+        ext: 'vue', //[[font]]
+        sync: true, //[[font]]
+      }).join('') //[[font]]
+      //[[font]]
       config.module.rules.delete('fonts') //[[font]]
       config.module.rule('fonts') //[[font]]
         .test(/\.(woff2?|eot|ttf|otf)(\?.*)?$/i) //[[font]]
@@ -52,7 +52,7 @@ module.exports = {
               limit: 10000, //[[font]]
               name: 'fonts/[name].[hash:8].[ext]' //[[font]]
             }) //[[font]]
-
+      //[[font]]
       config.module.rules.delete('images')
       config.module.rule('images')
         .test(/\.(png|jpe?g|gif)(\?.*)?$/)
