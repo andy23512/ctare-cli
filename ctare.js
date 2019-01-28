@@ -220,7 +220,7 @@ function editBrowsersList() {
 
 function handleFonts() {
   if (selectedFeatures['Noto Sans TC']) {
-    fs.appendFileSync('.gitignore', '\n# add by ctare\nsrc/assets/fonts/');
+    fs.appendFileSync('.gitignore', '\n# add by ctare\nsrc/assets/fonts');
     if (!fs.existsSync('src/assets/fonts/')) fs.mkdirSync('src/assets/fonts/');
     fontUrls.forEach(downloadFont);
     files['global.sass'].toRemove.push('!font');
