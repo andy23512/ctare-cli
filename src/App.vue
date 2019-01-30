@@ -22,4 +22,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+#v-app
+  overflow-x: hidden
 </style>
