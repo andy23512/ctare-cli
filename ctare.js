@@ -36,6 +36,12 @@ const files = {
     toRemove: []
   }
 };
+const complexToRemove = {
+  '_app_created': {
+    'affectedFiles': ['App.vue'],
+    'deps': ['Save UTM', 'Check Mobile']
+  }
+}
 const selectedFeatures = {};
 const setting = {};
 let projectName = '';
@@ -50,10 +56,11 @@ getProjectName()
   .then(removeUnneedFile)
   .then(cloneCtareSource)
   .then(copyFiles)
-  .then(installPackages)
+  .then(installModules)
   .then(editBrowsersList)
   .then(handleFonts)
   .then(handleModules)
+  .then(handleComplexToRemove)
   .then(removeUnneedFeautesImport)
   .catch(console.error);
 
@@ -262,6 +269,14 @@ function handleModules() {
       })
     }
   });
+}
+
+function handleComplexToRemove() {
+  Object.keys(complexToRemove).forEach(name => {
+    if(!complexToRemove[name].deps.some(f => selectedFeatures[f])) {
+      f.affectedFiles.forEach(file => files[file].toRemove.push(name))
+    }
+  })
 }
 
 function removeUnneedFeautesImport() {

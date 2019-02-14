@@ -9,7 +9,7 @@ import query from 'query-string' //[[Save UTM,!router]]
 
 export default {
   name: 'App',
-  created() {
+  created() { //[[_app_created]]
     $(window).resize(() => this.$store.commit('checkMobile')).resize() //[[Check Mobile,jquery]]
     window.addEventListener("resize", () => this.$store.commit('checkMobile')); //[[Check Mobile,!jquery]]
     const event = document.createEvent('HTMLEvents'); //[[Check Mobile,!jquery]]
@@ -17,7 +17,7 @@ export default {
     window.dispatchEvent(event); //[[Check Mobile,!jquery]]
     this.$store.commit('saveUtm', query.parse(location.search)) //[[Save UTM,!router]]
     this.$store.commit('saveUtm', this.$route.query) //[[Save UTM,router]]
-  },
+  }, //[[_app_created]]
 }
 </script>
 
