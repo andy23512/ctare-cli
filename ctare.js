@@ -274,7 +274,7 @@ function handleModules() {
 function handleComplexToRemove() {
   Object.keys(complexToRemove).forEach(name => {
     if(!complexToRemove[name].deps.some(f => selectedFeatures[f])) {
-      f.affectedFiles.forEach(file => files[file].toRemove.push(name))
+      complexToRemove[name].affectedFiles.forEach(file => files[file].toRemove.push(name))
     }
   })
 }
