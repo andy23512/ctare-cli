@@ -50,7 +50,7 @@ getProjectName()
   .then(removeUnneedFile)
   .then(cloneCtareSource)
   .then(copyFiles)
-  .then(installModules)
+  .then(installPackages)
   .then(editBrowsersList)
   .then(handleFonts)
   .then(handleModules)
@@ -118,8 +118,8 @@ function getCtareConfig() {
           new inquirer.Separator(' = Fonts = '),
           ...features.fonts,
           ...selectableFunctions,
-          new inquirer.Separator(' = Modules = '),
-          ...features.modules
+          new inquirer.Separator(' = Packages = '),
+          ...features.packages
         ]
       }
     ])
@@ -192,7 +192,7 @@ function installModules() {
   const install = installDeps(installDepsProgram);
 
   // collect modules that need to installed
-  const installed = features.modules
+  const installed = features.packages
     .concat(features.functions)
     .concat(features.fonts)
     .filter(m => selectedFeatures[m.name])
@@ -239,8 +239,8 @@ function downloadFont(targetUrl) {
   );
 }
 
-function handleModules() {
-  features.modules
+function handlePackages() {
+  features.packages
   .concat(features.functions)
   .forEach(f => {
     if (!f.affectedFiles) return;
