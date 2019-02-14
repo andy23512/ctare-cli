@@ -118,8 +118,8 @@ function getCtareConfig() {
           new inquirer.Separator(' = Fonts = '),
           ...features.fonts,
           ...selectableFunctions,
-          new inquirer.Separator(' = Packages = '),
-          ...features.packages
+          new inquirer.Separator(' = Modules = '),
+          ...features.modules
         ]
       }
     ])
@@ -192,7 +192,7 @@ function installModules() {
   const install = installDeps(installDepsProgram);
 
   // collect modules that need to installed
-  const installed = features.packages
+  const installed = features.modules
     .concat(features.functions)
     .concat(features.fonts)
     .filter(m => selectedFeatures[m.name])
@@ -239,8 +239,8 @@ function downloadFont(targetUrl) {
   );
 }
 
-function handlePackages() {
-  features.packages
+function handleModules() {
+  features.modules
   .concat(features.functions)
   .forEach(f => {
     if (!f.affectedFiles) return;
