@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import {parse} from 'query-string' //[[Save UTM,!router]]
+import { parse } from 'query-string' //[[Save UTM,!router]]
 
 export default {
   name: 'App',
