@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import query from 'query-string' //[[Save UTM,!router]]
+import {parse} from 'query-string' //[[Save UTM,!router]]
 
 export default {
   name: 'App',
@@ -15,7 +15,7 @@ export default {
     const event = document.createEvent('HTMLEvents'); //[[Check Mobile,!jquery]]
     event.initEvent('resize', true, false); //[[Check Mobile,!jquery]]
     window.dispatchEvent(event); //[[Check Mobile,!jquery]]
-    this.$store.commit('saveUtm', query.parse(location.search)) //[[Save UTM,!router]]
+    this.$store.commit('saveUtm', parse(location.search)) //[[Save UTM,!router]]
     this.$store.commit('saveUtm', this.$route.query) //[[Save UTM,router]]
   }, //[[_app_created]]
 }
