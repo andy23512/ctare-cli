@@ -294,6 +294,7 @@ function removeUnneedFeautesImport() {
         ''
       );
     fileContent = fileContent.replace(/ \/\/\[\[.*$/gm, '');
+    fileContent = fileContent.replace(/\n{3,}/g, '\n\n');
     fs.writeFileSync(f.path, fileContent);
   });
 }
