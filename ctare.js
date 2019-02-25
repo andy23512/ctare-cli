@@ -59,6 +59,7 @@ getProjectName()
   .then(installModules)
   .then(editBrowsersList)
   .then(handleFonts)
+  .then(handleDistIgnore)
   .then(handleModules)
   .then(handleComplexToRemove)
   .then(removeUnneedFeautesImport)
@@ -244,6 +245,12 @@ function downloadFont(targetUrl) {
   request(targetUrl).pipe(
     fs.createWriteStream(path.join('src/assets/fonts/', fileName))
   );
+}
+
+function handleDistIgnore() {
+  if (selectedFeatures['Add Dist to Git Repo']) {
+    fs.appendFileSync('.gitignore', '\n# add by ctare\n!/dist');
+  }
 }
 
 function handleModules() {
