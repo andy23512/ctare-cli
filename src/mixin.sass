@@ -24,6 +24,13 @@
   line-height: $line-height
   text-align: $text-align
 
+=iflex($justify-content, $align-items: flex-start, $flex-direction: null, $flex-wrap: null)
+  align-items: $align-items
+  display: inline-flex
+  flex-direction: $flex-direction
+  flex-wrap: $flex-wrap
+  justify-content: $justify-content
+
 =position($position, $top: null, $right: null, $bottom: null, $left: null)
   bottom: $bottom
   left: $left
