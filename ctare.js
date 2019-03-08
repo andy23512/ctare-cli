@@ -39,7 +39,7 @@ const files = {
 const complexToRemove = {
   '_app_created': {
     'affectedFiles': ['App.vue'],
-    'deps': ['Save UTM', 'Check Mobile']
+    'deps': ['Save UTM', 'Check Mobile', 'axios']
   }
 }
 const selectedFeatures = {};

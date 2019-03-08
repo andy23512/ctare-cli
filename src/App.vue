@@ -10,6 +10,7 @@ import { parse } from 'query-string' //[[Save UTM,!router]]
 export default {
   name: 'App',
   created() { //[[_app_created]]
+    document.cookie=`XSRF-TOKEN=${Math.random().toString(36).substr(2)}` //[[axios]]
     $(window).resize(() => this.$store.commit('checkMobile')).resize() //[[Check Mobile,jquery]]
     window.addEventListener("resize", () => this.$store.commit('checkMobile')); //[[Check Mobile,!jquery]]
     const event = document.createEvent('HTMLEvents'); //[[Check Mobile,!jquery]]
