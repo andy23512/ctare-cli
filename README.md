@@ -1,5 +1,5 @@
 # ctare-cli
-A vue-cli wrapper for CTARE-style vue
+A @vue/cli wrapper for CTARE-style vue
 ## Notice
 - This wrapper is currently only compatible with mac OS.
 ## Requirement
