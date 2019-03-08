@@ -301,7 +301,7 @@ function removeUnneedFeautesImport() {
         new RegExp(`^.*\\[\\[${t}(,.*?)?\\]\\]\\n`, 'g'),
         ''
       );
-    fileContent = fileContent.replace(/ \/\/\[\[.*$/gm, '');
+    fileContent = fileContent.replace(/ ?\/\/\[\[.*$/gm, '');
     fileContent = fileContent.replace(/\n{3,}/g, '\n\n');
     fs.writeFileSync(f.path, fileContent);
   });
