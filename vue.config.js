@@ -17,7 +17,7 @@ module.exports = {
         $: 'jquery/dist/jquery.slim.js', //[[jquery]]
         jQuery: 'jquery/dist/jquery.slim.js', //[[jquery]]
       }]) //[[jquery]]
-
+//[[jquery]]
     if(config.get('mode') === 'production') {
       const { join } = require('path') //[[font]]
       const scanner = require('charactor-scanner') //[[font]]
@@ -26,7 +26,7 @@ module.exports = {
         ext: 'vue', //[[font]]
         sync: true, //[[font]]
       }).join('') //[[font]]
-      //[[font]]
+//[[font]]
       config.module.rules.delete('fonts') //[[font]]
       config.module.rule('fonts') //[[font]]
         .test(/\.(woff2?|eot|ttf|otf)(\?.*)?$/i) //[[font]]
@@ -52,7 +52,7 @@ module.exports = {
               limit: 10000, //[[font]]
               name: 'fonts/[name].[hash:8].[ext]' //[[font]]
             }) //[[font]]
-      //[[font]]
+//[[font]]
       config.module.rules.delete('images') //[[Image Optimization]]
       config.module.rule('images') //[[Image Optimization]]
         .test(/\.(png|jpe?g|gif)(\?.*)?$/) //[[Image Optimization]]
