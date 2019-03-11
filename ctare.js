@@ -228,9 +228,9 @@ function editBrowsersList() {
 
 function handleFonts() {
   if (selectedFeatures['Noto Sans TC']) {
-    fs.appendFileSync('.gitignore', '\n# add by ctare\nsrc/assets/fonts');
+    fs.appendFileSync('.gitignore', '\n# add by ctare\nsrc/assets/font');
     if (!fs.existsSync('src/assets/')) fs.mkdirSync('src/assets/');
-    if (!fs.existsSync('src/assets/fonts/')) fs.mkdirSync('src/assets/fonts/');
+    if (!fs.existsSync('src/assets/font/')) fs.mkdirSync('src/assets/font/');
     fontUrls.forEach(downloadFont);
     files['global.sass'].toRemove.push('!font');
     files['vue.config.js'].toRemove.push('!font');
@@ -244,7 +244,7 @@ function handleFonts() {
 function downloadFont(targetUrl) {
   const fileName = path.basename(url.parse(targetUrl).pathname);
   request(targetUrl).pipe(
-    fs.createWriteStream(path.join('src/assets/fonts/', fileName))
+    fs.createWriteStream(path.join('src/assets/font/', fileName))
   );
 }
 
