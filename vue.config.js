@@ -6,7 +6,7 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        data: '@import "src/mixin.sass"'
+        data: '@import "src/mixin.sass"\n@import "src/reset-mixin.sass"'
       },
     },
   },
