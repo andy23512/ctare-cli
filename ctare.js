@@ -247,6 +247,9 @@ function handleModules() {
           }
         })
       }
+      f.affectedFiles.forEach(file => {
+        files[file].toRemove.push(`!${f.name}`);
+      })
     }
     else {
       f.affectedFiles.forEach(file => {
