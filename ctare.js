@@ -11,7 +11,6 @@ const url = require('url');
 
 const features = require('./lib/features');
 const fixedDevDeps = require('./lib/dev-deps');
-const fontUrls = require('./lib/font-urls');
 
 // global variables
 const files = {
@@ -226,28 +225,6 @@ function editBrowsersList() {
   });
 }
 
-function handleFonts() {
-  if (selectedFeatures['Noto Sans TC']) {
-    fs.appendFileSync('.gitignore', '\n# add by ctare\nsrc/assets/font');
-    if (!fs.existsSync('src/assets/')) fs.mkdirSync('src/assets/');
-    if (!fs.existsSync('src/assets/font/')) fs.mkdirSync('src/assets/font/');
-    fontUrls.forEach(downloadFont);
-    files['global.sass'].toRemove.push('!font');
-    files['vue.config.js'].toRemove.push('!font');
-  } else {
-    fs.unlinkSync('src/font.sass');
-    files['global.sass'].toRemove.push('font');
-    files['vue.config.js'].toRemove.push('font');
-  }
-}
-
-function downloadFont(targetUrl) {
-  const fileName = path.basename(url.parse(targetUrl).pathname);
-  request(targetUrl).pipe(
-    fs.createWriteStream(path.join('src/assets/font/', fileName))
-  );
-}
-
 function handleDistIgnore() {
   if (selectedFeatures['Add Dist to Git Repo']) {
     fs.appendFileSync('.gitignore', '\n# add by ctare\n!/dist');
@@ -256,6 +233,7 @@ function handleDistIgnore() {
 
 function handleModules() {
   features.modules
+  .concat(features.fonts)
   .concat(features.functions)
   .forEach(f => {
     if (!f.affectedFiles) return;
