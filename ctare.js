@@ -11,7 +11,6 @@ const url = require('url');
 
 const features = require('./lib/features');
 const fixedDevDeps = require('./lib/dev-deps');
-const fontUrls = require('./lib/font-urls');
 
 // global variables
 const files = {
@@ -58,7 +57,6 @@ getProjectName()
   .then(copyFiles)
   .then(installModules)
   .then(editBrowsersList)
-  .then(handleFonts)
   .then(handleDistIgnore)
   .then(handleModules)
   .then(handleComplexToRemove)
@@ -123,8 +121,6 @@ function getCtareConfig() {
         name: 'features',
         pageSize: 20,
         choices: [
-          new inquirer.Separator(' = Fonts = '),
-          ...features.fonts,
           ...selectableFunctions,
           new inquirer.Separator(' = Modules = '),
           ...features.modules
@@ -202,7 +198,6 @@ function installModules() {
   // collect modules that need to installed
   const installed = features.modules
     .concat(features.functions)
-    .concat(features.fonts)
     .filter(m => selectedFeatures[m.name])
   const deps = installed.reduce((acc, m) => acc.concat(m.packages), []);
   const devDeps = installed.reduce((acc, m) => acc.concat(m.devPackages), fixedDevDeps);
@@ -224,28 +219,6 @@ function editBrowsersList() {
       err => (!err ? resolve() : reject(err))
     );
   });
-}
-
-function handleFonts() {
-  if (selectedFeatures['Noto Sans TC']) {
-    fs.appendFileSync('.gitignore', '\n# add by ctare\nsrc/assets/font');
-    if (!fs.existsSync('src/assets/')) fs.mkdirSync('src/assets/');
-    if (!fs.existsSync('src/assets/font/')) fs.mkdirSync('src/assets/font/');
-    fontUrls.forEach(downloadFont);
-    files['global.sass'].toRemove.push('!font');
-    files['vue.config.js'].toRemove.push('!font');
-  } else {
-    fs.unlinkSync('src/font.sass');
-    files['global.sass'].toRemove.push('font');
-    files['vue.config.js'].toRemove.push('font');
-  }
-}
-
-function downloadFont(targetUrl) {
-  const fileName = path.basename(url.parse(targetUrl).pathname);
-  request(targetUrl).pipe(
-    fs.createWriteStream(path.join('src/assets/font/', fileName))
-  );
 }
 
 function handleDistIgnore() {
