@@ -10,7 +10,7 @@ module.exports = {
       },
     },
   },
-  chainWebpack: (config) => {
+  chainWebpack(config) {
     config //[[jquery]]
       .plugin('provide') //[[jquery]]
       .use(webpack.ProvidePlugin, [{ //[[jquery]]
