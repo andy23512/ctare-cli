@@ -1,4 +1,4 @@
-const webpack = require('webpack')
+const {ProvidePlugin} = require('webpack')
 
 module.exports = {
   publicPath: '/',
@@ -13,7 +13,7 @@ module.exports = {
   chainWebpack: (config) => {
     config //[[jquery]]
       .plugin('provide') //[[jquery]]
-      .use(webpack.ProvidePlugin, [{ //[[jquery]]
+      .use(ProvidePlugin, [{ //[[jquery]]
         $: 'jquery/dist/jquery.slim.js', //[[jquery]]
         jQuery: 'jquery/dist/jquery.slim.js', //[[jquery]]
       }]) //[[jquery]]
