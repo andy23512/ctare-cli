@@ -1,4 +1,4 @@
-const {ProvidePlugin} = require('webpack')
+const {ProvidePlugin} = require('webpack') //[[jquery]]
 
 module.exports = {
   publicPath: '/',
