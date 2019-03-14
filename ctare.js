@@ -5,9 +5,7 @@ const commandExists = require('command-exists');
 const fs = require('fs');
 const inquirer = require('inquirer');
 const path = require('path');
-const request = require('request');
 const rimraf = require('rimraf');
-const url = require('url');
 
 const features = require('./lib/features');
 const fixedDevDeps = require('./lib/dev-deps');
