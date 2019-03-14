@@ -159,6 +159,7 @@ function copyFiles() {
   const hasStore = fs.existsSync('./src/store.js');
   child_process.execSync('cp ctare-cli/vue.config.js .');
   child_process.execSync('cp -rf ctare-cli/src .');
+  child_process.execSync('cp -rf ctare-cli/public .');
   if (!hasRouter) {
     fs.unlinkSync('src/router.js');
     rimraf.sync('src/views/');
