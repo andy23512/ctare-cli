@@ -53,6 +53,7 @@ getProjectName()
   .then(removeUnneedFile)
   .then(cloneCtareSource)
   .then(copyFiles)
+  .then(handleFavicon)
   .then(installModules)
   .then(editBrowsersList)
   .then(handleDistIgnore)
@@ -123,7 +124,9 @@ function getCtareConfig() {
           ...features.fonts,
           ...selectableFunctions,
           new inquirer.Separator(' = Modules = '),
-          ...features.modules
+          ...features.modules,
+          new inquirer.Separator(' = Others = '),
+          ...features.others,
         ]
       }
     ])
@@ -159,7 +162,7 @@ function copyFiles() {
   const hasStore = fs.existsSync('./src/store.js');
   child_process.execSync('cp ctare-cli/vue.config.js .');
   child_process.execSync('cp -rf ctare-cli/src .');
-  child_process.execSync('cp -rf ctare-cli/public .');
+  child_process.execSync('cp -rf ctare-cli/public/index.html ./public/');
   if (!hasRouter) {
     fs.unlinkSync('src/router.js');
     rimraf.sync('src/views/');
@@ -171,6 +174,12 @@ function copyFiles() {
     files['main.js'].toRemove.push('store');
   }
   child_process.execSync('\\rm -rf ctare-cli/');
+}
+
+function handleFavicon() {
+  if(selectedFeatures['TechOrange favicon']) {
+    child_process.execSync('cp -rf ctare-cli/public/favicon.ico ./public/');
+  }
 }
 
 function installDeps(program) {
