@@ -16,8 +16,8 @@ export default new Vuex.Store({
   },
   mutations: {
     checkMobile(state) { //[[Check Mobile]]
-      state.mobile = $(window).width() < 992 //[[Check Mobile,jquery]]
-      state.mobile = window.innerWidth < 992 //[[Check Mobile,!jquery]]
+      state.mobile = $(window).width() < 1000 //[[Check Mobile,jquery]]
+      state.mobile = window.innerWidth < 1000 //[[Check Mobile,!jquery]]
     }, //[[Check Mobile]]
     saveUtm(state, query) { //[[Save UTM]]
       state.utm.utm_source = query.utm_source ? query.utm_source : '' //[[Save UTM]]
