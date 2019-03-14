@@ -3,13 +3,6 @@ const webpack = require('webpack') //[[jquery]]
 module.exports = {
   publicPath: '/',
   outputDir: 'dist',
-  css: {
-    loaderOptions: {
-      sass: {
-        data: '@import "src/mixin.sass"\n@import "src/reset-mixin.sass"'
-      },
-    },
-  },
   chainWebpack(config) {
     config //[[jquery]]
       .plugin('provide') //[[jquery]]
