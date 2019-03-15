@@ -4,6 +4,7 @@ A @vue/cli wrapper for CTARE-style Vue
 - This wrapper is currently only compatible with macOS.
 ## Requirement
 - (global module) [@vue/cli@3](https://www.npmjs.com/package/@vue/cli)
+- git
 ## Install
 ```
 npm i -g andy23512/ctare-cli

@@ -60,6 +60,7 @@ getProjectName()
   .then(handleModules)
   .then(handleComplexToRemove)
   .then(removeUnneedFeautesImport)
+  .then(addCommit)
   .catch(console.error);
 
 function getProjectName() {
@@ -293,6 +294,11 @@ function removeUnneedFeautesImport() {
     fileContent = fileContent.replace(/\n{3,}/g, '\n\n');
     fs.writeFileSync(f.path, fileContent);
   });
+}
+
+function addCommit() {
+  child_process.execSync('git add .');
+  child_process.execSync('git commit -m "CTARE setup"');
 }
 
 function promiseSpawn(command, args) {
