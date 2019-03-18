@@ -13,6 +13,11 @@ export default new Vuex.Store({
       utm_term: '', //[[Save UTM]]
       utm_content: '', //[[Save UTM]]
     }, //[[Save UTM]]
+    scroll: {
+      offset: 0,
+      sections: [],
+      position: '',
+    }
   },
   mutations: {
     checkMobile(state) { //[[Check Mobile]]
@@ -26,6 +31,9 @@ export default new Vuex.Store({
       state.utm.utm_term = query.utm_term ? query.utm_term : '' //[[Save UTM]]
       state.utm.utm_content = query.utm_content ? query.utm_content : '' //[[Save UTM]]
     }, //[[Save UTM]]
+    setScrollPosition(state, position) {
+      state.scroll.position = position
+    },
   },
   actions: {
 
