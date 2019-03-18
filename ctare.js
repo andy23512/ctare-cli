@@ -37,6 +37,10 @@ const complexToRemove = {
   '_app_created': {
     'affectedFiles': ['App.vue'],
     'deps': ['Save UTM', 'Check Mobile', 'axios']
+  },
+  '_offset_state': {
+    'affectedFiles': ['store.js'],
+    'deps': ['vue-scrollto', 'Track Scroll Position']
   }
 }
 const selectedFeatures = {};

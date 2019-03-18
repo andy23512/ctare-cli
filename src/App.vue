@@ -19,21 +19,21 @@ export default {
     this.$store.commit('saveUtm', parse(location.search)) //[[Save UTM,!router]]
     this.$store.commit('saveUtm', this.$route.query) //[[Save UTM,router]]
   }, //[[_app_created]]
-  mounted() {
-    $(window).scroll(() => {
-      const scrollTop = $(window).scrollTop() + this.$store.state.scroll.offset
-      const sections = this.$store.state.scroll.sections
-      for (let i = sections.length - 1; i >= 0; i--) {
-        if(scrollTop >= $(sections[i]).position().top) {
-          if(this.$store.state.scroll.position !== sections[i]) {
-            this.$store.commit('setScrollPosition', sections[i])
-            history.replaceState(null, null, sections[i])
-          }
-          break
-        }
-      }
-    }).scroll()
-  },
+  mounted() { //[[Track Scroll Position]]
+    $(window).scroll(() => { //[[Track Scroll Position]]
+      const scrollTop = $(window).scrollTop() + this.$store.state.scroll.offset //[[Track Scroll Position]]
+      const sections = this.$store.state.scroll.sections //[[Track Scroll Position]]
+      for (let i = sections.length - 1; i >= 0; i--) { //[[Track Scroll Position]]
+        if(scrollTop >= $(sections[i]).position().top) { //[[Track Scroll Position]]
+          if(this.$store.state.scroll.position !== sections[i]) { //[[Track Scroll Position]]
+            this.$store.commit('setScrollPosition', sections[i]) //[[Track Scroll Position]]
+            history.replaceState(null, null, sections[i]) //[[Track Scroll Position]]
+          } //[[Track Scroll Position]]
+          break //[[Track Scroll Position]]
+        } //[[Track Scroll Position]]
+      } //[[Track Scroll Position]]
+    }).scroll() //[[Track Scroll Position]]
+  }, //[[Track Scroll Position]]
 }
 </script>
 
