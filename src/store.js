@@ -20,9 +20,8 @@ export default new Vuex.Store({
     } //[[_offset_state]]
   },
   mutations: {
-    checkMobile(state) { //[[Check Mobile]]
-      state.mobile = $(window).width() < 1000 //[[Check Mobile,jquery]]
-      state.mobile = window.innerWidth < 1000 //[[Check Mobile,!jquery]]
+    setMobile(state, mobile) { //[[Check Mobile]]
+      state.mobile = mobile //[[Check Mobile]]
     }, //[[Check Mobile]]
     saveUtm(state, query) { //[[Save UTM]]
       state.utm.utm_source = query.utm_source ? query.utm_source : '' //[[Save UTM]]
@@ -31,6 +30,9 @@ export default new Vuex.Store({
       state.utm.utm_term = query.utm_term ? query.utm_term : '' //[[Save UTM]]
       state.utm.utm_content = query.utm_content ? query.utm_content : '' //[[Save UTM]]
     }, //[[Save UTM]]
+    setScrollOffset(state, offset) { //[[Check Mobile]]
+      state.scroll.offset = offset //[[Check Mobile]]
+    }, //[[Check Mobile]]
     setScrollPosition(state, position) { //[[Track Scroll Position]]
       state.scroll.position = position //[[Track Scroll Position]]
     }, //[[Track Scroll Position]]

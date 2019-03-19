@@ -40,7 +40,7 @@ const complexToRemove = {
   },
   '_offset_state': {
     'affectedFiles': ['store.js'],
-    'deps': ['vue-scrollto', 'Track Scroll Position']
+    'deps': ['vue-scrollto', 'Track Scroll Position', 'Check Mobile']
   }
 }
 const selectedFeatures = {};
