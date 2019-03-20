@@ -11,7 +11,7 @@ import router from '@/router' //[[router]]
 import store from '@/store' //[[store]]
 
 Vue.use(VueRx) //[[rxjs]]
-Vue.use(VueScrollTo, { offset: -store.state.scroll.offset }) //[[vue-scrollto]]
+Vue.use(VueScrollTo) //[[vue-scrollto]]
 
 Vue.config.productionTip = false
 Vue.http = axios //[[axios]]
