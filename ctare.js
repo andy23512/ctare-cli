@@ -302,7 +302,7 @@ function removeUnneedFeautesImport() {
 
 function addCommit() {
   child_process.execSync('git add .');
-  child_process.execSync('git commit -m "CTARE setup"');
+  child_process.execSync('git commit -m "setup"');
 }
 
 function promiseSpawn(command, args) {
