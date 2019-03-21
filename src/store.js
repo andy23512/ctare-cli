@@ -15,13 +15,13 @@ export default new Vuex.Store({
       utm_content: '',
     },
     //<</save-utm@function>>
-    //<<check-mobie@function&vue-scrollto@module|track-scroll-position@function>>
+    //<<check-mobile@function&vue-scrollto@module|track-scroll-position@function>>
     scroll: {
       offset: 0,
       sections: [], //[[track-scroll-position@function]]
       position: '', //[[track-scroll-position@function]]
     },
-    //<</check-mobie@function&vue-scrollto@module|track-scroll-position@function>>
+    //<</check-mobile@function&vue-scrollto@module|track-scroll-position@function>>
   },
   mutations: {
     //<<save-utm@function>>
