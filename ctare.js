@@ -105,7 +105,7 @@ function getCtareConfig() {
       {
         type: 'checkbox',
         message: 'Check the modules needed for your project: ',
-        name: 'modules',
+        name: 'module',
         choices: features.module
       },
       {
@@ -200,13 +200,14 @@ function installModules() {
   // collect modules that need to installed
   let deps = [];
   let devDeps = fixedDevDeps;
-  Object.keys(selection).forEach(category =>
-    Object.keys(selection[category]).forEach(c => {
-      const f = features[category][c];
-      if (f.packages) deps = deps.concat(f.packages);
-      if (f.devPackages) devDeps = devDeps.concat(f.devPackages);
+  Object.keys(features).forEach(category => {
+    features[category].forEach(feature => {
+      if (selection[category][feature.name]) {
+        if (feature.packages) deps = deps.concat(feature.packages);
+        if (feature.devPackages) devDeps = devDeps.concat(feature.devPackages);
+      }
     })
-  );
+  });
   return install(installDepsArgs, deps)().then(
     install(installDevDepsArgs, devDeps)
   );
