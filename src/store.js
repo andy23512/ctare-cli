@@ -17,7 +17,7 @@ export default new Vuex.Store({
       offset: 0, //[[_offset_state]]
       sections: [], //[[Track Scroll Position]]
       position: '', //[[Track Scroll Position]]
-    } //[[_offset_state]]
+    }, //[[_offset_state]]
   },
   mutations: {
     setMobile(state, mobile) { //[[Check Mobile]]
