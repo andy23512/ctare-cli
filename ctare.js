@@ -35,6 +35,7 @@ getProjectName()
   .then(installModules)
   .then(editBrowsersList)
   .then(handleDistIgnore)
+  .then(handleTags)
   .then(addCommit)
   .catch(console.error);
 
@@ -226,6 +227,21 @@ function handleDistIgnore() {
   if (selection.function['add-dist-to-git-repo']) {
     fs.appendFileSync('.gitignore', '\n# add by ctare\n!/dist');
   }
+}
+
+function handleTags() {
+  function tag2var(tag) {
+    return tag.replace('-', '_').replace('@', '$')
+  }
+  // collect all feature tags
+  const tags = {};
+  Object.keys(features).forEach(category => {
+    features[category].forEach(f => { tags[`${f.name}@${category}`] = !!selection[category][f.name] });
+  });
+  Object.keys(selection.internal).forEach(s => { tags[`${s}@internal`] = selection.internal[s] });
+
+  // form a javascript code with the tags
+  const vars = Object.keys(tags).map(t => `const ${tag2var(t)} = ${tags[t]};`).join('');
 }
 
 function addCommit() {
