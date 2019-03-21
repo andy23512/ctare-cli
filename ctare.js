@@ -11,40 +11,13 @@ const features = require('./lib/features');
 const fixedDevDeps = require('./lib/dev-deps');
 
 // global variables
-const files = {
-  'main.js': {
-    path: 'src/main.js',
-    toRemove: []
-  },
-  'global.sass': {
-    path: 'src/global.sass',
-    toRemove: []
-  },
-  'vue.config.js': {
-    path: 'vue.config.js',
-    toRemove: []
-  },
-  'App.vue': {
-    path: 'src/App.vue',
-    toRemove: []
-  },
-  'store.js': {
-    path: 'src/store.js',
-    toRemove: []
-  }
-};
-const complexToRemove = {
-  '_app_created': {
-    'affectedFiles': ['App.vue'],
-    'deps': ['Save UTM', 'Check Mobile', 'axios']
-  },
-  '_offset_state': {
-    'affectedFiles': ['store.js'],
-    'deps': ['vue-scrollto', 'Track Scroll Position', 'Check Mobile']
-  }
-}
-const selectedFeatures = {};
-const setting = {};
+const files = [
+  'main.js',
+  'global.sass',
+  'vue.config.js',
+  'App.vue',
+  'store.js'
+];
 const selection = {};
 let projectName = '';
 
@@ -62,9 +35,6 @@ getProjectName()
   .then(installModules)
   .then(editBrowsersList)
   .then(handleDistIgnore)
-  .then(handleModules)
-  .then(handleComplexToRemove)
-  .then(removeUnneedFeautesImport)
   .then(addCommit)
   .catch(console.error);
 
@@ -105,18 +75,18 @@ function runVueCli() {
 function getProjectSetting() {
   selection.internal = {
     router: fs.existsSync('./src/router.js'),
-    store: fs.existsSync('./src/store.js'),
-  }
+    store: fs.existsSync('./src/store.js')
+  };
 }
 
 function getCtareConfig() {
   process.stdout.write('\033c\033[3J'); // clear screen
-  const selectableFunctions = features.function.filter((f) => {
-    if(f.depend_on) {
-      return f.depend_on.every(d => selection.internal[d])
+  const selectableFunctions = features.function.filter(f => {
+    if (f.depend_on) {
+      return f.depend_on.every(d => selection.internal[d]);
     }
-    return true
-  })
+    return true;
+  });
   return inquirer
     .prompt([
       {
@@ -148,12 +118,12 @@ function getCtareConfig() {
     .then(answers => {
       // parse selected features
       Object.keys(answers).forEach(category => {
-        const categorySelection = {}
+        const categorySelection = {};
         answers[category].forEach(c => {
-          categorySelection[c] = true
-        })
-        selection[category] = categorySelection
-      })
+          categorySelection[c] = true;
+        });
+        selection[category] = categorySelection;
+      });
     });
 }
 
@@ -162,8 +132,8 @@ function changeDirToProject() {
 }
 
 function removeUnneedFile() {
-  fs.unlinkSync('src/components/HelloWorld.vue')
-  fs.unlinkSync('src/assets/logo.png')
+  fs.unlinkSync('src/components/HelloWorld.vue');
+  fs.unlinkSync('src/assets/logo.png');
   rimraf.sync('src/views/');
 }
 
@@ -198,7 +168,7 @@ function copyFiles() {
 }
 
 function handleFavicon() {
-  if(selection.other['tech-orange-favicon']) {
+  if (selection.other['tech-orange-favicon']) {
     child_process.execSync('cp -rf ctare-cli/public/favicon.ico ./public/');
   }
 }
@@ -206,15 +176,16 @@ function handleFavicon() {
 function installDeps(program) {
   return (args, deps) => {
     return () => {
-      if(deps.length > 0) {
+      if (deps.length > 0) {
         return promiseSpawn(program, [...args, ...deps]).catch(code => {
-          throw new Error('Dependencies install process exited with code ' + code);
+          throw new Error(
+            'Dependencies install process exited with code ' + code
+          );
         });
-      }
-      else {
+      } else {
         return Promise.resolve();
       }
-    }
+    };
   };
 }
 
@@ -231,27 +202,21 @@ function installModules() {
   let devDeps = fixedDevDeps;
   Object.keys(selection).forEach(category =>
     Object.keys(selection[category]).forEach(c => {
-      const f = features[category][c]
-      if(f.packages) deps = deps.concat(f.packages)
-      if(f.devPackages) devDeps = devDeps.concat(f.devPackages)
+      const f = features[category][c];
+      if (f.packages) deps = deps.concat(f.packages);
+      if (f.devPackages) devDeps = devDeps.concat(f.devPackages);
     })
-  )
+  );
   return install(installDepsArgs, deps)().then(
     install(installDevDepsArgs, devDeps)
   );
 }
 
 function editBrowsersList() {
-  const browserslist = [
-    '> 1% in tw',
-    'last 3 versions',
-    'not ie <= 11'
-  ];
+  const browserslist = ['> 1% in tw', 'last 3 versions', 'not ie <= 11'];
   return new Promise((resolve, reject) => {
-    fs.writeFile(
-      '.browserslistrc',
-      browserslist.join('\n'),
-      err => (!err ? resolve() : reject(err))
+    fs.writeFile('.browserslistrc', browserslist.join('\n'), err =>
+      !err ? resolve() : reject(err)
     );
   });
 }
@@ -260,63 +225,6 @@ function handleDistIgnore() {
   if (selection.function['add-dist-to-git-repo']) {
     fs.appendFileSync('.gitignore', '\n# add by ctare\n!/dist');
   }
-}
-
-function handleModules() {
-  features.modules
-  .concat(features.fonts)
-  .concat(features.functions)
-  .forEach(f => {
-    if (!f.affectedFiles) return;
-    if (selectedFeatures[f.name]) {
-      if (f.cond) {
-        f.cond.forEach(c => {
-          if(selectedFeatures[c] || setting[c]) {
-            f.affectedFiles.forEach(file => files[file].toRemove.push(`${f.name},!${c}`))
-          }
-          else {
-            f.affectedFiles.forEach(file => files[file].toRemove.push(`${f.name},${c}`))
-          }
-        })
-      }
-      f.affectedFiles.forEach(file => {
-        files[file].toRemove.push(`!${f.name}`);
-      })
-    }
-    else {
-      f.affectedFiles.forEach(file => {
-        files[file].toRemove.push(f.name);
-      })
-    }
-  });
-}
-
-function handleComplexToRemove() {
-  Object.keys(complexToRemove).forEach(name => {
-    if(!complexToRemove[name].deps.some(f => selectedFeatures[f])) {
-      complexToRemove[name].affectedFiles.forEach(file => files[file].toRemove.push(name))
-    }
-  })
-}
-
-function removeUnneedFeautesImport() {
-  Object.values(files).forEach(f => {
-    if (!fs.existsSync(f.path)) {
-      return;
-    }
-    let fileContent = fs.readFileSync(f.path, { encoding: 'utf8' });
-    for (const t of f.toRemove)
-      fileContent = fileContent.replace(
-        new RegExp(`\\n.*\\[\\[${t}(,.*?)?\\]\\]`, 'g'),
-        ''
-      ).replace(
-        new RegExp(`^.*\\[\\[${t}(,.*?)?\\]\\]\\n`, 'g'),
-        ''
-      );
-    fileContent = fileContent.replace(/ ?\/\/\[\[.*$/gm, '');
-    fileContent = fileContent.replace(/\n{3,}/g, '\n\n');
-    fs.writeFileSync(f.path, fileContent);
-  });
 }
 
 function addCommit() {
