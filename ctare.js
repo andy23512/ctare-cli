@@ -156,6 +156,10 @@ function removeUnneedFile() {
 function cloneCtareSource() {
   return promiseSpawn('git', [
     'clone',
+    '--depth',
+    '1',
+    '-b',
+    'line-by-line-process',
     'https://github.com/andy23512/ctare-cli/'
   ]).catch(code => {
     throw new Error('Clone CTARE github repo exited with error code' + code);
