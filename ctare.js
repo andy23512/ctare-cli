@@ -12,11 +12,11 @@ const fixedDevDeps = require('./lib/dev-deps');
 
 // global variables
 const files = [
-  'main.js',
-  'global.sass',
-  'vue.config.js',
-  'App.vue',
-  'store.js'
+  'src/App.vue',
+  'src/global.sass',
+  'src/main.js',
+  'src/store.js',
+  'vue.config.js'
 ];
 const selection = {};
 let projectName = '';
@@ -231,7 +231,10 @@ function handleDistIgnore() {
 
 function handleTags() {
   function tag2var(tag) {
-    return tag.replace('-', '_').replace('@', '$')
+    return tag.replace(/-/g, '_').replace(/\./g, '_').replace(/@/g, '$');
+  }
+  function expressionTransform(expression) {
+    return expression.replace(/&/g, '&&').replace(/\|/g, '||');
   }
   // collect all feature tags
   const tags = {};
@@ -242,6 +245,20 @@ function handleTags() {
 
   // form a javascript code with the tags
   const vars = Object.keys(tags).map(t => `const ${tag2var(t)} = ${tags[t]};`).join('');
+
+  // collect all expressions from files
+  const expressions = {};
+  files.forEach(filename => {
+    const content = fs.readFileSync(filename, {encoding: 'utf-8'});
+    content.match(/(?<=\[\[|\<\<)[a-z\-.@&|!]+/g).forEach(expression => {
+      expressions[expression] = true;
+    })
+  })
+  const expressionList = Object.keys(expressions);
+
+  // form a javascript code from the expressions
+  const statement = `[${expressionList.map(e => expressionTransform(tag2var(e))).join(',')}]`
+  const keep = eval(vars + statement);
 }
 
 function addCommit() {
