@@ -5,57 +5,65 @@
 </template>
 
 <script>
-import { parse } from 'query-string' //[[Save UTM,!router]]
+import { parse } from 'query-string' //[[save-utm&!router]]
 
 export default {
   name: 'App',
-  created() { //[[_app_created]]
+  created() { //[[]]
     document.cookie=`XSRF-TOKEN=${Math.random().toString(36).substr(2)}` //[[axios]]
-    $(window).resize(() => { //[[Check Mobile,jquery]]
-      const mobile = $(window).width() < 1024 //[[Check Mobile,jquery]]
-      if(this.$store.state.mobile !== mobile) { //[[Check Mobile,jquery]]
-        if(mobile) { //[[Check Mobile,jquery]]
-          this.$store.commit('setMobile', true) //[[Check Mobile,jquery]]
-          this.$store.commit('setScrollOffset', 0) //[[Check Mobile,jquery]]
-        } else { //[[Check Mobile,jquery]]
-          this.$store.commit('setMobile', false) //[[Check Mobile,jquery]]
-          this.$store.commit('setScrollOffset', 0) //[[Check Mobile,jquery]]
-        } //[[Check Mobile,jquery]]
-      } //[[Check Mobile,jquery]]
-    }).resize() //[[Check Mobile,jquery]]
-    window.addEventListener("resize", () => { //[[Check Mobile,!jquery]]
-      const mobile = window.innerWidth < 1024 //[[Check Mobile,!jquery]]
-      if(this.$store.state.mobile !== mobile) { //[[Check Mobile,!jquery]]
-        if(mobile) { //[[Check Mobile,!jquery]]
-          this.$store.commit('setMobile', true) //[[Check Mobile,!jquery]]
-          this.$store.commit('setScrollOffset', 0) //[[Check Mobile,!jquery]]
-        } else { //[[Check Mobile,!jquery]]
-          this.$store.commit('setMobile', false) //[[Check Mobile,!jquery]]
-          this.$store.commit('setScrollOffset', 0) //[[Check Mobile,!jquery]]
-        } //[[Check Mobile,!jquery]]
-      } //[[Check Mobile,!jquery]]
-    }); //[[Check Mobile,!jquery]]
-    const event = document.createEvent('HTMLEvents'); //[[Check Mobile,!jquery]]
-    event.initEvent('resize', true, false); //[[Check Mobile,!jquery]]
-    window.dispatchEvent(event); //[[Check Mobile,!jquery]]
-    this.$store.commit('saveUtm', parse(location.search)) //[[Save UTM,!router]]
-    this.$store.commit('saveUtm', this.$route.query) //[[Save UTM,router]]
-  }, //[[_app_created]]
-  mounted() { //[[Track Scroll Position]]
-    $(window).scroll(() => { //[[Track Scroll Position]]
-      const scrollTop = $(window).scrollTop() + this.$store.state.scroll.offset //[[Track Scroll Position]]
-      const sections = this.$store.state.scroll.sections //[[Track Scroll Position]]
-      for (let i = sections.length - 1; i >= 0; i--) { //[[Track Scroll Position]]
-        if(scrollTop >= $(sections[i]).position().top) { //[[Track Scroll Position]]
-          if(this.$store.state.scroll.position !== sections[i]) { //[[Track Scroll Position]]
-            this.$store.commit('setScrollPosition', sections[i]) //[[Track Scroll Position]]
-            history.replaceState(null, null, sections[i]) //[[Track Scroll Position]]
-          } //[[Track Scroll Position]]
-          break //[[Track Scroll Position]]
-        } //[[Track Scroll Position]]
-      } //[[Track Scroll Position]]
-    }).scroll() //[[Track Scroll Position]]
-  }, //[[Track Scroll Position]]
+    //<<check-mobile>>
+    //<<jquery>>
+    $(window).resize(() => {
+      const mobile = $(window).width() < 1024
+      if(this.$store.state.mobile !== mobile) {
+        if(mobile) {
+          this.$store.commit('setMobile', true)
+          this.$store.commit('setScrollOffset', 0) //[[vue-scrollto]]
+        } else {
+          this.$store.commit('setMobile', false)
+          this.$store.commit('setScrollOffset', 0) //[[vue-scrollto]]
+        }
+      }
+    }).resize()
+    //<</jquery>>
+    //<<!jquery>>
+    window.addEventListener("resize", () => {
+      const mobile = window.innerWidth < 1024
+      if(this.$store.state.mobile !== mobile) {
+        if(mobile) {
+          this.$store.commit('setMobile', true)
+          this.$store.commit('setScrollOffset', 0)
+        } else {
+          this.$store.commit('setMobile', false)
+          this.$store.commit('setScrollOffset', 0)
+        }
+      }
+    });
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent('resize', true, false);
+    window.dispatchEvent(event);
+    //<</!jquery>>
+    //<</check-mobile>>
+    this.$store.commit('saveUtm', parse(location.search)) //[[save-utm&!router]]
+    this.$store.commit('saveUtm', this.$route.query) //[[save-utm&router]]
+  }, //[[/]]
+  mounted() { //[[]]
+    //<<track-scroll-position>>
+    $(window).scroll(() => {
+      const scrollTop = $(window).scrollTop() + this.$store.state.scroll.offset
+      const sections = this.$store.state.scroll.sections
+      for (let i = sections.length - 1; i >= 0; i--) {
+        if(scrollTop >= $(sections[i]).position().top) {
+          if(this.$store.state.scroll.position !== sections[i]) {
+            this.$store.commit('setScrollPosition', sections[i])
+            history.replaceState(null, null, sections[i])
+          }
+          break
+        }
+      }
+    }).scroll()
+    //<</track-scroll-position>>
+  }, //[[/]]
 }
 </script>
 
