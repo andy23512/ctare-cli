@@ -114,32 +114,40 @@ function getCtareConfig() {
     }
     return true
   })
-  if (selectableFunctions.length > 0) {
-    selectableFunctions.unshift(new inquirer.Separator(' = Functions = '))
-  }
   return inquirer
     .prompt([
       {
         type: 'checkbox',
-        message: 'Check the features needed for your project: ',
-        name: 'features',
-        pageSize: 20,
-        choices: [
-          new inquirer.Separator(' = Fonts = '),
-          ...features.fonts,
-          ...selectableFunctions,
-          new inquirer.Separator(' = Modules = '),
-          ...features.modules,
-          new inquirer.Separator(' = Others = '),
-          ...features.others,
-        ]
+        message: 'Check the fonts needed for your project: ',
+        name: 'fonts',
+        choices: features.fonts
+      },
+      {
+        type: 'checkbox',
+        message: 'Check the functions needed for your project: ',
+        name: 'functions',
+        when: selectableFunctions.length > 0,
+        choices: selectableFunctions
+      },
+      {
+        type: 'checkbox',
+        message: 'Check the modules needed for your project: ',
+        name: 'modules',
+        choices: features.modules
+      },
+      {
+        type: 'checkbox',
+        message: 'Check the other functions needed for your project: ',
+        name: 'others',
+        choices: features.others
       }
     ])
     .then(answers => {
       // parse selected features
-      answers['features'].forEach(c => {
+      console.log(answers)
+      /*answers['features'].forEach(c => {
         selectedFeatures[c] = true;
-      });
+      });*/
     });
 }
 
