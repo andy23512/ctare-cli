@@ -7,8 +7,8 @@ import VueScrollTo from 'vue-scrollto' //[[vue-scrollto@module]]
 import axios from 'axios' //[[axios@module]]
 
 import App from '@/App.vue'
-import router from '@/router' //[[router@module]]
-import store from '@/store' //[[store@module]]
+import router from '@/router' //[[router@internal]]
+import store from '@/store' //[[store@internal]]
 
 Vue.use(VueRx) //[[rxjs@module]]
 Vue.use(VueScrollTo) //[[vue-scrollto@module]]
