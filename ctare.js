@@ -227,12 +227,15 @@ function installModules() {
   const install = installDeps(installDepsProgram);
 
   // collect modules that need to installed
-  const installed = features.modules
-    .concat(features.functions)
-    .concat(features.fonts)
-    .filter(m => selectedFeatures[m.name])
-  const deps = installed.reduce((acc, m) => acc.concat(m.packages), []);
-  const devDeps = installed.reduce((acc, m) => acc.concat(m.devPackages), fixedDevDeps);
+  let deps = [];
+  let devDeps = fixedDevDeps;
+  Object.keys(selection).forEach(category =>
+    Object.keys(selection[category]).forEach(c => {
+      const f = features[category][c]
+      if(f.packages) deps = deps.concat(f.packages)
+      if(f.devPackages) devDeps = devDeps.concat(f.devPackages)
+    })
+  )
   return install(installDepsArgs, deps)().then(
     install(installDevDepsArgs, devDeps)
   );
@@ -254,7 +257,7 @@ function editBrowsersList() {
 }
 
 function handleDistIgnore() {
-  if (selectedFeatures['Add Dist to Git Repo']) {
+  if (selection.function['add-dist-to-git-repo']) {
     fs.appendFileSync('.gitignore', '\n# add by ctare\n!/dist');
   }
 }
