@@ -45,6 +45,7 @@ const complexToRemove = {
 }
 const selectedFeatures = {};
 const setting = {};
+const selection = {};
 let projectName = '';
 
 getProjectName()
@@ -102,15 +103,17 @@ function runVueCli() {
 }
 
 function getProjectSetting() {
-  setting.router = fs.existsSync('./src/router.js');
-  setting.store = fs.existsSync('./src/store.js');
+  selection.internal = {
+    router: fs.existsSync('./src/router.js'),
+    store: fs.existsSync('./src/store.js'),
+  }
 }
 
 function getCtareConfig() {
   process.stdout.write('\033c\033[3J'); // clear screen
-  const selectableFunctions = features.functions.filter((f) => {
+  const selectableFunctions = features.function.filter((f) => {
     if(f.depend_on) {
-      return f.depend_on.every(d => setting[d])
+      return f.depend_on.every(d => selection.internal[d])
     }
     return true
   })
@@ -119,13 +122,13 @@ function getCtareConfig() {
       {
         type: 'checkbox',
         message: 'Check the fonts needed for your project: ',
-        name: 'fonts',
-        choices: features.fonts
+        name: 'font',
+        choices: features.font
       },
       {
         type: 'checkbox',
         message: 'Check the functions needed for your project: ',
-        name: 'functions',
+        name: 'function',
         when: selectableFunctions.length > 0,
         choices: selectableFunctions
       },
@@ -133,21 +136,24 @@ function getCtareConfig() {
         type: 'checkbox',
         message: 'Check the modules needed for your project: ',
         name: 'modules',
-        choices: features.modules
+        choices: features.module
       },
       {
         type: 'checkbox',
         message: 'Check the other functions needed for your project: ',
-        name: 'others',
-        choices: features.others
+        name: 'other',
+        choices: features.other
       }
     ])
     .then(answers => {
       // parse selected features
-      console.log(answers)
-      /*answers['features'].forEach(c => {
-        selectedFeatures[c] = true;
-      });*/
+      Object.keys(answers).forEach(category => {
+        const categorySelection = {}
+        answers[category].forEach(c => {
+          categorySelection[c] = true
+        })
+        selection[category] = categorySelection
+      })
     });
 }
 
@@ -175,16 +181,14 @@ function cloneCtareSource() {
 }
 
 function copyFiles() {
-  const hasRouter = fs.existsSync('./src/router.js');
-  const hasStore = fs.existsSync('./src/store.js');
+  const hasRouter = selection.internal.router;
+  const hasStore = selection.internal.store;
   child_process.execSync('cp ctare-cli/vue.config.js .');
   child_process.execSync('cp -rf ctare-cli/src .');
   child_process.execSync('cp -rf ctare-cli/public/index.html ./public/');
   if (!hasRouter) {
     fs.unlinkSync('src/router.js');
     rimraf.sync('src/views/');
-    files['main.js'].toRemove.push('router');
-    files['App.vue'].toRemove.push('router');
   }
   if (!hasStore) {
     fs.unlinkSync('src/store.js');
@@ -194,7 +198,7 @@ function copyFiles() {
 }
 
 function handleFavicon() {
-  if(selectedFeatures['TechOrange favicon']) {
+  if(selection.other['tech-orange-favicon']) {
     child_process.execSync('cp -rf ctare-cli/public/favicon.ico ./public/');
   }
 }
