@@ -1,35 +1,39 @@
-const webpack = require('webpack') //[[jquery]]
+const webpack = require('webpack') //[[jquery@module]]
 
 module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   chainWebpack(config) {
-    config //[[jquery]]
-      .plugin('provide') //[[jquery]]
-      .use(webpack.ProvidePlugin, [{ //[[jquery]]
-        $: 'jquery/dist/jquery.slim.js', //[[jquery]]
-        jQuery: 'jquery/dist/jquery.slim.js', //[[jquery]]
-      }]) //[[jquery]]
-//[[jquery]]
+    //<<jquery@module>>
+    config
+      .plugin('provide')
+      .use(webpack.ProvidePlugin, [{
+        $: 'jquery/dist/jquery.slim.js',
+        jQuery: 'jquery/dist/jquery.slim.js',
+      }])
+
+    //<</jquery@module>>
     if(config.get('mode') === 'production') {
-      config.module.rules.delete('images') //[[Image Optimization]]
-      config.module.rule('images') //[[Image Optimization]]
-        .test(/\.(png|jpe?g|gif)(\?.*)?$/) //[[Image Optimization]]
-        .use('file-loader') //[[Image Optimization]]
-          .loader('file-loader') //[[Image Optimization]]
-          .options({ //[[Image Optimization]]
-            name: `img/[name].[hash:8].[ext]` //[[Image Optimization]]
-          }) //[[Image Optimization]]
-          .end() //[[Image Optimization]]
-        .use('img-loader') //[[Image Optimization]]
-          .loader('img-loader') //[[Image Optimization]]
-          .options({ //[[Image Optimization]]
-            plugins: [ //[[Image Optimization]]
-              require('imagemin-gifsicle')(), //[[Image Optimization]]
-              require('imagemin-mozjpeg')(), //[[Image Optimization]]
-              require('imagemin-pngquant')(), //[[Image Optimization]]
-            ] //[[Image Optimization]]
-          }) //[[Image Optimization]]
+      //<<image-optimization@function>>
+      config.module.rules.delete('images')
+      config.module.rule('images')
+        .test(/\.(png|jpe?g|gif)(\?.*)?$/)
+        .use('file-loader')
+          .loader('file-loader')
+          .options({
+            name: `img/[name].[hash:8].[ext]`
+          })
+          .end()
+        .use('img-loader')
+          .loader('img-loader')
+          .options({
+            plugins: [
+              require('imagemin-gifsicle')(),
+              require('imagemin-mozjpeg')(),
+              require('imagemin-pngquant')(),
+            ]
+          })
+      //<</image-optimization@function>>
     }
   },
   devServer: {

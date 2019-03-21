@@ -1,54 +1,55 @@
 <template lang="pug">
 #v-app
   | App
-  router-view //[[router]]
+  router-view //[[router@internal]]
 </template>
 
 <script>
-import { parse } from 'query-string' //[[save-utm&!router]]
+import { parse } from 'query-string' //[[save-utm@function&!router@internal]]
 
 export default {
   name: 'App',
   created() { //[[]]
-    document.cookie=`XSRF-TOKEN=${Math.random().toString(36).substr(2)}` //[[axios]]
-    //<<check-mobile>>
-    //<<jquery>>
+    document.cookie=`XSRF-TOKEN=${Math.random().toString(36).substr(2)}` //[[axios@module]]
+    //<<check-mobile@function>>
+    //<<jquery@module>>
     $(window).resize(() => {
       const mobile = $(window).width() < 1024
       if(this.$store.state.mobile !== mobile) {
         if(mobile) {
           this.$store.commit('setMobile', true)
-          this.$store.commit('setScrollOffset', 0) //[[vue-scrollto]]
+          this.$store.commit('setScrollOffset', 0) //[[vue-scrollto@module]]
         } else {
           this.$store.commit('setMobile', false)
-          this.$store.commit('setScrollOffset', 0) //[[vue-scrollto]]
+          this.$store.commit('setScrollOffset', 0) //[[vue-scrollto@module]]
         }
       }
     }).resize()
-    //<</jquery>>
-    //<<!jquery>>
+    //<</jquery@module>>
+    //<<!jquery@module>>
     window.addEventListener("resize", () => {
       const mobile = window.innerWidth < 1024
       if(this.$store.state.mobile !== mobile) {
         if(mobile) {
           this.$store.commit('setMobile', true)
-          this.$store.commit('setScrollOffset', 0)
+          this.$store.commit('setScrollOffset', 0) //[[vue-scrollto@module]]
         } else {
           this.$store.commit('setMobile', false)
-          this.$store.commit('setScrollOffset', 0)
+          this.$store.commit('setScrollOffset', 0) //[[vue-scrollto@module]]
         }
       }
     });
     const event = document.createEvent('HTMLEvents');
     event.initEvent('resize', true, false);
     window.dispatchEvent(event);
-    //<</!jquery>>
-    //<</check-mobile>>
-    this.$store.commit('saveUtm', parse(location.search)) //[[save-utm&!router]]
-    this.$store.commit('saveUtm', this.$route.query) //[[save-utm&router]]
+    //<</!jquery@module>>
+    //<</check-mobile@function>>
+    this.$store.commit('saveUtm', parse(location.search)) //[[save-utm@function&!router@internal]]
+    this.$store.commit('saveUtm', this.$route.query) //[[save-utm@function&router@internal]]
   }, //[[/]]
   mounted() { //[[]]
-    //<<track-scroll-position>>
+    //<<track-scroll-position@function>>
+    //<<jquery@module>>
     $(window).scroll(() => {
       const scrollTop = $(window).scrollTop() + this.$store.state.scroll.offset
       const sections = this.$store.state.scroll.sections
@@ -62,7 +63,8 @@ export default {
         }
       }
     }).scroll()
-    //<</track-scroll-position>>
+    //<</jquery@module>>
+    //<</track-scroll-position@function>>
   }, //[[/]]
 }
 </script>
