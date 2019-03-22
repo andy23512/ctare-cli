@@ -133,8 +133,8 @@ function changeDirToProject() {
 }
 
 function removeUnneedFile() {
-  fs.unlinkSync('src/components/HelloWorld.vue');
-  fs.unlinkSync('src/assets/logo.png');
+  if (fs.existsSync('src/components/HelloWorld.vue')) fs.unlinkSync('src/components/HelloWorld.vue');
+  if (fs.existsSync('src/assets/logo.png')) fs.unlinkSync('src/assets/logo.png');
   rimraf.sync('src/views/');
 }
 
@@ -257,8 +257,34 @@ function handleTags() {
   const expressionList = Object.keys(expressions);
 
   // form a javascript code from the expressions
-  const statement = `[${expressionList.map(e => expressionTransform(tag2var(e))).join(',')}]`
-  const keep = eval(vars + statement);
+  const statement = `[${expressionList.map(e => expressionTransform(tag2var(e))).join(',')}]`;
+  const results = eval(vars + statement);
+  expressionList.map((e, i) => {
+    expressions[e] = results[i];
+  });
+
+  // remove unneed part from file
+  files.forEach(filePath => {
+    const lines = fs.readFileSync(filePath, {encoding: 'utf-8'}).split('\n');
+    const newLines = [];
+    let blockRemove = false;
+    let blockTag = null;
+    lines.forEach(line => {
+      const expressionMatch = line.match(/(\[\[|\<\<)([a-z\-.@&|!]+)/);
+      const endMatch = line.match(/\<\<\/([a-z\-.@&|!]+)/);
+      if (endMatch) {
+        if (endMatch[1] === blockTag) blockTag = null;
+      }
+      else if (blockTag) return;
+      else if (expressionMatch) {
+        if (expressionMatch[1] === '<<' && !expressions[expressionMatch[2]]) blockTag = expressionMatch[2];
+        if (expressionMatch[1] === '[[' && expressions[expressionMatch[2]]) newLines.push(line)
+      }
+      else newLines.push(line)
+    })
+    let newContent = newLines.join('\n').replace(/ ?\/\/\[\[.*$/gm, '').replace(/\n{3,}/g, '\n\n');
+    fs.writeFileSync(filePath, newContent);
+  })
 }
 
 function addCommit() {
