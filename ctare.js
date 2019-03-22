@@ -269,18 +269,28 @@ function handleTags() {
     const newLines = [];
     let blockRemove = false;
     let blockTag = null;
+    let previousBomb = false;
     lines.forEach(line => {
       const expressionMatch = line.match(/(\[\[|\<\<)([a-z\-.@&|!]+)/);
       const endMatch = line.match(/\<\<\/([a-z\-.@&|!]+)/);
-      if (endMatch) {
+      const bombAMatch = line.match(/(\[\[\]\])/);
+      const bombBMatch = line.match(/(\[\[\/\]\])/);
+      if (previousBomb && bombBMatch) newLines.pop();
+      else if (endMatch) {
         if (endMatch[1] === blockTag) blockTag = null;
       }
       else if (blockTag) return;
       else if (expressionMatch) {
         if (expressionMatch[1] === '<<' && !expressions[expressionMatch[2]]) blockTag = expressionMatch[2];
-        if (expressionMatch[1] === '[[' && expressions[expressionMatch[2]]) newLines.push(line)
+        if (expressionMatch[1] === '[[' && expressions[expressionMatch[2]]) {
+          previousBomb = !!bombAMatch;
+          newLines.push(line);
+        }
       }
-      else newLines.push(line)
+      else {
+        previousBomb = !!bombAMatch;
+        newLines.push(line);
+      }
     })
     let newContent = newLines.join('\n').replace(/ ?\/\/\[\[.*$/gm, '').replace(/\n{3,}/g, '\n\n');
     fs.writeFileSync(filePath, newContent);
