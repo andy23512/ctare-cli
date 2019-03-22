@@ -64,6 +64,24 @@ export default {
       }
     }).scroll()
     //<</jquery@module>>
+    //<<!jquery@module>>
+    window.addEventListener("scroll", () => {
+      const scrollTop = (window.pageYOffset | document.body.scrollTop) + this.$store.state.scroll.offset
+      const sections = this.$store.state.scroll.sections
+      for (let i = sections.length - 1; i >= 0; i--) {
+        if(scrollTop >= document.querySelector(sections[i]).getBoundingClientRect().top) {
+          if(this.$store.state.scroll.position !== sections[i]) {
+            this.$store.commit('setScrollPosition', sections[i])
+            history.replaceState(null, null, sections[i])
+          }
+          break
+        }
+      }
+    })
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent('scroll', true, false);
+    window.dispatchEvent(event);
+    //<</!jquery@module>>
     //<</track-scroll-position@function>>
   }, //[[/]]
 }
