@@ -32,7 +32,7 @@ export default new Vuex.Store({
       state.utm.utm_term = query.utm_term ? query.utm_term : ''
       state.utm.utm_content = query.utm_content ? query.utm_content : ''
     },
-    //<<save-utm@function>>
+    //<</save-utm@function>>
     //<<check-mobile@function>>
     setMobile(state, mobile) {
       state.mobile = mobile
