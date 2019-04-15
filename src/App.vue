@@ -89,7 +89,4 @@ export default {
 
 <style lang="sass" scoped>
 @import "~@/mixin.sass"
-
-#v-app
-  overflow-x: hidden
 </style>
