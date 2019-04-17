@@ -6,7 +6,7 @@
 
 <script>
 import { parse } from 'query-string' //[[save-utm@function&!router@internal]]
-
+//[[save-utm@function&!router@internal]]
 export default {
   name: 'App',
   created() { //[[]]
