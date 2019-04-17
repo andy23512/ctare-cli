@@ -89,4 +89,5 @@ export default {
 
 <style lang="sass" scoped>
 @import "~@/mixin.sass"
+
 </style>
