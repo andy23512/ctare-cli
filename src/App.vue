@@ -11,8 +11,6 @@ export default {
   name: 'App',
   created() { //[[]]
     document.cookie=`XSRF-TOKEN=${Math.random().toString(36).substr(2)}` //[[axios@module]]
-    this.$store.commit('saveUtm', parse(location.search)) //[[save-utm@function&!router@internal]]
-    this.$store.commit('saveUtm', this.$route.query) //[[save-utm@function&router@internal]]
     //<<check-mobile@function>>
     //<<jquery@module>>
     $(window).resize(() => {
@@ -46,6 +44,8 @@ export default {
     window.dispatchEvent(event);
     //<</!jquery@module>>
     //<</check-mobile@function>>
+    this.$store.commit('saveUtm', parse(location.search)) //[[save-utm@function&!router@internal]]
+    this.$store.commit('saveUtm', this.$route.query) //[[save-utm@function&router@internal]]
   }, //[[/]]
   mounted() { //[[]]
     //<<track-scroll-position@function>>
