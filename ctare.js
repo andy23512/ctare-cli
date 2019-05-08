@@ -144,6 +144,8 @@ function removeUnneedFile() {
 function cloneCtareSource() {
   return promiseSpawn('git', [
     'clone',
+    '-b storybook',
+    '--single-branch',
     '--depth',
     '1',
     'https://github.com/andy23512/ctare-cli/'
