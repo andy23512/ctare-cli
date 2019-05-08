@@ -15,7 +15,6 @@ const files = [
   'src/App.vue',
   'src/global.sass',
   'src/main.js',
-  'src/store.js',
   'vue.config.js'
 ];
 const selection = {};
@@ -36,6 +35,7 @@ getProjectName()
   .then(editBrowsersList)
   .then(handleDistIgnore)
   .then(handleTags)
+  .then(handlePreCommitHook)
   .then(addCommit)
   .catch(console.error);
 
@@ -78,6 +78,9 @@ function getProjectSetting() {
     router: fs.existsSync('./src/router.js'),
     store: fs.existsSync('./src/store.js')
   };
+  if(selection.internal.store) {
+    files.push('src/store.js')
+  }
 }
 
 function getCtareConfig() {
@@ -292,6 +295,15 @@ function handleTags() {
     let newContent = newLines.join('\n').replace(/ ?\/\/\[\[.*$/gm, '').replace(/\n{3,}/g, '\n\n');
     fs.writeFileSync(filePath, newContent);
   })
+}
+
+function handlePreCommitHook() {
+  if (selection.function['add-dist-to-git-repo']) {
+    const pkg = JSON.parse(fs.readFileSync('./package.json'))
+    pkg['pre-commit'] = ['precommit-build']
+    pkg['scripts']['precommit-build'] = pkg['scripts']['build'] + ' && git add dist/'
+    fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2))
+  }
 }
 
 function addCommit() {
