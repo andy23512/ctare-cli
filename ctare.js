@@ -34,8 +34,8 @@ getProjectName()
   .then(installModules)
   .then(editBrowsersList)
   .then(handleDistIgnore)
-  .then(handleTags)
   .then(handleStorybook)
+  .then(handleTags)
   .then(handlePreCommitHook)
   .then(addCommit)
   .catch(console.error);
@@ -238,6 +238,26 @@ function handleDistIgnore() {
   }
 }
 
+function handleStorybook() {
+  if (selection.plugin['storybook']) {
+    return promiseSpawn('vue', ['add storybook'])
+    .then(() => {
+      child_process.execSync('cp -rf ctare-cli/storybook .');
+      files.push('storybook/config.js')
+      const pkg = JSON.parse(fs.readFileSync('./package.json'))
+      pkg['scripts']['storybook:serve'] = pkg['scripts']['storybook:serve'].replace('config/storybook', 'storybook')
+      pkg['scripts']['storybook:build'] = pkg['scripts']['storybook:build'].replace('config/storybook', 'storybook')
+      fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2))
+    })
+    .catch(code => {
+      throw new Error('storybook process exited with error code ' + code);
+    })
+  }
+  else {
+    fs.unlinkSync('src/storybook.sass')
+  }
+}
+
 function handleTags() {
   function tag2var(tag) {
     return tag.replace(/-/g, '_').replace(/\./g, '_').replace(/@/g, '$');
@@ -304,26 +324,6 @@ function handleTags() {
     let newContent = newLines.join('\n').replace(/ ?\/\/\[\[.*$/gm, '').replace(/\n{3,}/g, '\n\n');
     fs.writeFileSync(filePath, newContent);
   })
-}
-
-function handleStorybook() {
-  if (selection.plugin['storybook']) {
-    return promiseSpawn('vue', ['add storybook'])
-    .then(() => {
-      fs.renameSync('./config/storybook', './storybook')
-      child_process.execSync('\\rm -rf config/')
-      const pkg = JSON.parse(fs.readFileSync('./package.json'))
-      pkg['scripts']['storybook:serve'] = pkg['scripts']['storybook:serve'].replace('config/storybook', 'storybook')
-      pkg['scripts']['storybook:build'] = pkg['scripts']['storybook:build'].replace('config/storybook', 'storybook')
-      fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2))
-      let config = fs.readFileSync('./storybook/config.js', {encoding: 'utf-8'})
-      config = config.replace('../../src/stories', '../src/stories')
-      fs.writeFileSync('./storybook/config.js', config)
-    })
-    .catch(code => {
-      throw new Error('storybook process exited with error code ' + code);
-    })
-  }
 }
 
 function handlePreCommitHook() {
