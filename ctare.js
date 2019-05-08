@@ -174,6 +174,13 @@ function copyFiles() {
   if (!hasStore) {
     fs.unlinkSync('src/store.js');
   }
+  if (selection.plugin['storybook']) {
+    child_process.execSync('cp -rf ctare-cli/storybook .');
+    files.push('storybook/config.js')
+  }
+  else {
+    fs.unlinkSync('src/storybook.sass')
+  }
   child_process.execSync('\\rm -rf ctare-cli/');
 }
 
@@ -242,8 +249,7 @@ function handleStorybook() {
   if (selection.plugin['storybook']) {
     return promiseSpawn('vue', ['add storybook'])
     .then(() => {
-      child_process.execSync('cp -rf ctare-cli/storybook .');
-      files.push('storybook/config.js')
+      child_process.execSync('\\rm -rf config/');
       const pkg = JSON.parse(fs.readFileSync('./package.json'))
       pkg['scripts']['storybook:serve'] = pkg['scripts']['storybook:serve'].replace('config/storybook', 'storybook')
       pkg['scripts']['storybook:build'] = pkg['scripts']['storybook:build'].replace('config/storybook', 'storybook')
@@ -252,9 +258,6 @@ function handleStorybook() {
     .catch(code => {
       throw new Error('storybook process exited with error code ' + code);
     })
-  }
-  else {
-    fs.unlinkSync('src/storybook.sass')
   }
 }
 
