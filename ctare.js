@@ -256,7 +256,7 @@ function handleStorybook() {
       pkg['scripts']['storybook:build'] = pkg['scripts']['storybook:build'].replace('config/storybook', 'storybook')
       fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2))
       let content = fs.readFileSync('./src/stories/index.stories.js', {encoding: 'utf-8'})
-      content = content.replace('../components/MyButton.vue', '@/components/MyButton.vue')
+      content = content.replace('../components/MyButton.vue', '@/components/MyButton.vue').replace('/* eslint-disable import/no-extraneous-dependencies */\n', '')
       fs.writeFileSync('./src/stories/index.stories.js', content)
     })
     .catch(code => {
