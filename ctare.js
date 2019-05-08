@@ -35,6 +35,7 @@ getProjectName()
   .then(editBrowsersList)
   .then(handleDistIgnore)
   .then(handleTags)
+  .then(handleStorybook)
   .then(handlePreCommitHook)
   .then(addCommit)
   .catch(console.error);
@@ -111,6 +112,12 @@ function getCtareConfig() {
         message: 'Check the modules needed for your project: ',
         name: 'module',
         choices: features.module
+      },
+      {
+        type: 'checkbox',
+        message: 'Check the plugins needed for your project: ',
+        name: 'plugin',
+        choices: features.plugin
       },
       {
         type: 'checkbox',
@@ -297,6 +304,14 @@ function handleTags() {
     let newContent = newLines.join('\n').replace(/ ?\/\/\[\[.*$/gm, '').replace(/\n{3,}/g, '\n\n');
     fs.writeFileSync(filePath, newContent);
   })
+}
+
+function handleStorybook() {
+  if (selection.plugin['storybook']) {
+    return promiseSpawn('vue', ['add storybook']).catch(code => {
+      throw new Error('storybook process exited with error code ' + code);
+    })
+  }
 }
 
 function handlePreCommitHook() {
