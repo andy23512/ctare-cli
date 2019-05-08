@@ -255,6 +255,9 @@ function handleStorybook() {
       pkg['scripts']['storybook:serve'] = pkg['scripts']['storybook:serve'].replace('config/storybook', 'storybook')
       pkg['scripts']['storybook:build'] = pkg['scripts']['storybook:build'].replace('config/storybook', 'storybook')
       fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2))
+      let content = fs.readFileSync('./src/stories/index.stories.js', {encoding: 'utf-8'})
+      content = content.replace('../components/MyButton.vue', '@/components/MyButton.vue')
+      fs.writeFileSync('./src/stories/index.stories.js', content)
     })
     .catch(code => {
       throw new Error('storybook process exited with error code ' + code);
