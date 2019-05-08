@@ -181,6 +181,9 @@ function copyFiles() {
   else {
     fs.unlinkSync('src/storybook.sass')
   }
+  if (!selection.plugin['storybook'] || !hasStore) {
+    fs.unlinkSync('src/StoreMock.js')
+  }
   child_process.execSync('\\rm -rf ctare-cli/');
 }
 
