@@ -258,7 +258,7 @@ function handleTags() {
   // collect all expressions from files
   const expressions = {};
   files.forEach(filename => {
-    const content = fs.readFileSync(filename, {encoding: 'utf-8'});
+    const content = fs.readFileSync(filename, {encoding: 'utf-8'})
     content.match(/(?<=\[\[|\<\<)[a-z\-.@&|!]+/g).forEach(expression => {
       expressions[expression] = true;
     })
@@ -308,7 +308,19 @@ function handleTags() {
 
 function handleStorybook() {
   if (selection.plugin['storybook']) {
-    return promiseSpawn('vue', ['add storybook']).catch(code => {
+    return promiseSpawn('vue', ['add storybook'])
+    .then(() => {
+      fs.renameSync('./config/storybook', './storybook')
+      child_process.execSync('\\rm -rf config/')
+      const pkg = JSON.parse(fs.readFileSync('./package.json'))
+      pkg['scripts']['storybook:serve'] = pkg['scripts']['storybook:serve'].replace('config/storybook', 'storybook')
+      pkg['scripts']['storybook:build'] = pkg['scripts']['storybook:build'].replace('config/storybook', 'storybook')
+      fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2))
+      let config = fs.readFileSync('./storybook/config.js', {encoding: 'utf-8'})
+      config = config.replace('../../src/stories', '../src/stories')
+      fs.writeFileSync('./storybook/config.js', config)
+    })
+    .catch(code => {
       throw new Error('storybook process exited with error code ' + code);
     })
   }
