@@ -12,6 +12,7 @@ import store from '@/store' //[[store@internal]]
 Vue.use(VueScrollTo) //[[vue-scrollto@module]]
 
 Vue.config.productionTip = false
+Vue.http = axios //[[axios@module]]
 Vue.prototype.$http = axios //[[axios@module]]
 
 new Vue({
