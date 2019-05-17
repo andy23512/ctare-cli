@@ -8,7 +8,10 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   scrollBehavior(to, from, saved) {
-    return saved ? saved : { x: 0, y: 0 }
+    return new Promise(resolve => {
+      const position = saved ? saved : { x: 0, y: 0 }
+      setTimeout(() => resolve(position), 0)
+    })
   },
   routes: [
     {
