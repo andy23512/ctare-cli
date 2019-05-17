@@ -90,4 +90,8 @@ export default {
 <style lang="sass" scoped>
 @import "~@/mixin.sass"
 
+#v-app
+  +flex(null, null, column)
+  min-height: 100%
+  min-width: 320px
 </style>
