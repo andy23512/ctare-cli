@@ -36,7 +36,6 @@ getProjectName()
   .then(handleDistIgnore)
   .then(handleStorybook)
   .then(handleTags)
-  .then(handlePreCommitHook)
   .then(addCommit)
   .catch(console.error);
 
@@ -332,15 +331,6 @@ function handleTags() {
     let newContent = newLines.join('\n').replace(/ ?\/\/\[\[.*$/gm, '').replace(/\n{3,}/g, '\n\n');
     fs.writeFileSync(filePath, newContent);
   })
-}
-
-function handlePreCommitHook() {
-  if (selection.function['add-dist-to-git-repo']) {
-    const pkg = JSON.parse(fs.readFileSync('./package.json'))
-    pkg['pre-commit'] = ['precommit-build']
-    pkg['scripts']['precommit-build'] = pkg['scripts']['build'] + ' && git add dist/'
-    fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2))
-  }
 }
 
 function addCommit() {
