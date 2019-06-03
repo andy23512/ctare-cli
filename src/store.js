@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    mobile: true, //[[Check Mobile]]
+    mobile: true, //[[check-mobile@function]]
     //<<save-utm@function>>
     utm: {
       utm_source: '',
