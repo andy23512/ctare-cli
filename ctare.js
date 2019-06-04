@@ -250,7 +250,6 @@ function handleStorybook() {
     return promiseSpawn('vue', ['add storybook'])
     .then(() => {
       child_process.execSync('\\rm -rf config/');
-      child_process.execSync('\\rm -rf config/');
       const pkg = JSON.parse(fs.readFileSync('./package.json'))
       pkg['scripts']['storybook:serve'] = pkg['scripts']['storybook:serve'].replace('config/storybook', 'storybook')
       pkg['scripts']['storybook:build'] = pkg['scripts']['storybook:build'].replace('config/storybook', 'storybook')
