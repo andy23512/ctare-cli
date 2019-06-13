@@ -26,11 +26,11 @@ export default new Vuex.Store({
   mutations: {
     //<<save-utm@function>>
     saveUtm(state, query) {
-      state.utm.utm_source = query.utm_source ? query.utm_source : ''
-      state.utm.utm_medium = query.utm_medium ? query.utm_medium : ''
-      state.utm.utm_campaign = query.utm_campaign ? query.utm_campaign : ''
-      state.utm.utm_term = query.utm_term ? query.utm_term : ''
-      state.utm.utm_content = query.utm_content ? query.utm_content : ''
+      state.utm.utm_source = query.utm_source ? query.utm_source : null
+      state.utm.utm_medium = query.utm_medium ? query.utm_medium : null
+      state.utm.utm_campaign = query.utm_campaign ? query.utm_campaign : null
+      state.utm.utm_term = query.utm_term ? query.utm_term : null
+      state.utm.utm_content = query.utm_content ? query.utm_content : null
     },
     //<</save-utm@function>>
     //<<check-mobile@function>>
