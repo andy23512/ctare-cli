@@ -8,11 +8,11 @@ export default new Vuex.Store({
     mobile: true, //[[check-mobile@function]]
     //<<save-utm@function>>
     utm: {
-      utm_source: '',
-      utm_medium: '',
-      utm_campaign: '',
-      utm_term: '',
-      utm_content: '',
+      utm_source: null,
+      utm_medium: null,
+      utm_campaign: null,
+      utm_term: null,
+      utm_content: null,
     },
     //<</save-utm@function>>
     //<<check-mobile@function&vue-scrollto@module|track-scroll-position@function>>
