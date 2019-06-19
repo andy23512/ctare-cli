@@ -116,21 +116,9 @@
     padding: 10px
     resize: none
 
-=reset-ol
-  ol
-    counter-reset: li
-    list-style-type: none
+=reset-l
+  ol, ul
+    list-style-position: inside
     margin-bottom: 0
     margin-top: 0
     padding-left: 0
-    > li
-      counter-increment: li
-      &::before
-        content: counter(li)'. '
-
-=reset-ul
-  ul
-    padding-left: 0
-    list-style-type: none
-    margin-bottom: 0
-    margin-top: 0
