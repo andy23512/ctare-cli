@@ -37,10 +37,12 @@ export default new Vuex.Store({
     setMobile(state, mobile) {
       state.mobile = mobile
     },
+    //<</check-mobile@function>>
+    //<<check-mobile@function&vue-scrollto@module>>
     setScrollOffset(state, offset) {
       state.scroll.offset = offset
     },
-    //<</check-mobile@function>>
+    //<</check-mobile@function&vue-scrollto@module>>
     //<<track-scroll-position@function>>
     setScrollPosition(state, position) {
       state.scroll.position = position
