@@ -17,7 +17,7 @@ export default new Vuex.Store({
     //<</save-utm@function>>
     //<<check-mobile@function&vue-scrollto@module|track-scroll-position@function>>
     scroll: {
-      offset: 0,
+      offset: 0, //[[check-mobile@function&vue-scrollto@module]]
       sections: [], //[[track-scroll-position@function]]
       position: '', //[[track-scroll-position@function]]
     },
