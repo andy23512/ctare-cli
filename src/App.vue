@@ -50,37 +50,59 @@ export default {
   mounted() { //[[]]
     //<<track-scroll-position@function>>
     //<<jquery@module>>
+    setTimeout(() => {
+      if(location.hash) {
+        if($(window).scrollTop() === 0) {
+          this.$scrollTo(`#v-${location.hash.substr(1)}`, 0, {
+            offset: -this.$store.state.scroll.offset
+          })
+        }
+      } else {
+        history.replaceState(null, null, '#')
+      }
+    }, 500)
+
     $(window).scroll(() => {
       const scrollTop = $(window).scrollTop() + this.$store.state.scroll.offset
       const sections = this.$store.state.scroll.sections
       for (let i = sections.length - 1; i >= 0; i--) {
-        if(scrollTop >= $(sections[i]).position().top) {
+        if(scrollTop >= $(`#v-${sections[i]}`).position().top) {
           if(this.$store.state.scroll.position !== sections[i]) {
             this.$store.commit('setScrollPosition', sections[i])
-            history.replaceState(null, null, sections[i])
-          }
-          break
-        }
-      }
-    }).scroll()
-    //<</jquery@module>>
-    //<<!jquery@module>>
-    window.addEventListener("scroll", () => {
-      const scrollTop = (window.pageYOffset | document.body.scrollTop) + this.$store.state.scroll.offset
-      const sections = this.$store.state.scroll.sections
-      for (let i = sections.length - 1; i >= 0; i--) {
-        if(scrollTop >= document.querySelector(sections[i]).getBoundingClientRect().top) {
-          if(this.$store.state.scroll.position !== sections[i]) {
-            this.$store.commit('setScrollPosition', sections[i])
-            history.replaceState(null, null, sections[i])
+            history.replaceState(null, null, `#${sections[i]}`)
           }
           break
         }
       }
     })
-    const event = document.createEvent('HTMLEvents');
-    event.initEvent('scroll', true, false);
-    window.dispatchEvent(event);
+    //<</jquery@module>>
+    //<<!jquery@module>>
+    setTimeout(() => {
+      if(location.hash) {
+        const scrollTop = (window.pageYOffset | document.body.scrollTop)
+        if(scrollTop === 0) {
+          this.$scrollTo(`#v-${location.hash.substr(1)}`, 0, {
+            offset: -this.$store.state.scroll.offset
+          })
+        }
+      } else {
+        history.replaceState(null, null, '#')
+      }
+    }, 500)
+
+    window.addEventListener("scroll", () => {
+      const scrollTop = (window.pageYOffset | document.body.scrollTop) + this.$store.state.scroll.offset
+      const sections = this.$store.state.scroll.sections
+      for (let i = sections.length - 1; i >= 0; i--) {
+        if(scrollTop >= document.querySelector(`#v-${sections[i]}`).getBoundingClientRect().top) {
+          if(this.$store.state.scroll.position !== sections[i]) {
+            this.$store.commit('setScrollPosition', sections[i])
+            history.replaceState(null, null, `#${sections[i]}`)
+          }
+          break
+        }
+      }
+    })
     //<</!jquery@module>>
     //<</track-scroll-position@function>>
   }, //[[/]]
