@@ -56,11 +56,11 @@ function checkVueCliVersion() {
   return new Promise((resolve, reject) => {
     child_process.exec('vue -V', (err, stdout, stderr) => {
       const mainVersionNum = +stdout.toString().replace('@vue/cli ', '').split('.')[0];
-      mainVersionNum >= 3
+      mainVersionNum >= 4
         ? resolve()
         : reject(
             new Error(
-              'Error: The version of installed Vue-cli < 3.0.0\nRun "yarn global install @vue/cli" or "npm install --global @vue/cli" to install the latest vue-cli.'
+              'Error: The version of installed Vue-cli < 4.0.0\nRun "yarn global install @vue/cli" or "npm install --global @vue/cli" to install the latest vue-cli.'
             )
           );
     });
@@ -75,11 +75,11 @@ function runVueCli() {
 
 function getProjectSetting() {
   selection.internal = {
-    router: fs.existsSync('./src/router.js'),
-    store: fs.existsSync('./src/store.js')
+    router: fs.existsSync('./src/router/index.js'),
+    store: fs.existsSync('./src/store/index.js')
   };
   if(selection.internal.store) {
-    files.push('src/store.js')
+    files.push('src/store/index.js')
   }
 }
 
@@ -165,11 +165,11 @@ function copyFiles() {
   child_process.execSync('cp -rf ctare-cli/src .');
   child_process.execSync('cp -rf ctare-cli/public/index.html ./public/');
   if (!hasRouter) {
-    fs.unlinkSync('src/router.js');
+    rimraf.sync('src/router/');
     rimraf.sync('src/views/');
   }
   if (!hasStore) {
-    fs.unlinkSync('src/store.js');
+    rimraf('src/store/');
   }
   if (selection.plugin['storybook']) {
     child_process.execSync('cp -rf ctare-cli/storybook .');
