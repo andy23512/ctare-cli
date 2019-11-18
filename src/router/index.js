@@ -7,6 +7,7 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
+  base: process.env.BASE_URL,
   scrollBehavior(to, from, saved) {
     return new Promise(resolve => {
       const position = saved ? saved : { x: 0, y: 0 }
