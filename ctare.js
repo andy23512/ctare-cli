@@ -55,7 +55,7 @@ function getProjectName() {
 function checkVueCliVersion() {
   return new Promise((resolve, reject) => {
     child_process.exec('vue -V', (err, stdout, stderr) => {
-      const mainVersionNum = +stdout.toString().split('.')[0];
+      const mainVersionNum = +stdout.toString().replace('@vue/cli ', '').split('.')[0];
       mainVersionNum >= 3
         ? resolve()
         : reject(
