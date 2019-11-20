@@ -8,7 +8,7 @@
 import { parse } from 'query-string' //[[save-utm@function&!router@internal]]
 //[[save-utm@function&!router@internal]]
 export default {
-  name: 'app',
+  name: 'App',
   created() { //[[]]
     document.cookie=`XSRF-TOKEN=${Math.random().toString(36).substr(2)}` //[[axios@module]]
     //<<check-mobile@function>>
