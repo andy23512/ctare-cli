@@ -169,7 +169,7 @@ function copyFiles() {
     rimraf.sync('src/views/');
   }
   if (!hasStore) {
-    rimraf('src/store/');
+    rimraf.sync('src/store/');
   }
   if (selection.plugin['storybook']) {
     child_process.execSync('cp -rf ctare-cli/storybook .');
