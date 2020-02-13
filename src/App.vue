@@ -14,7 +14,7 @@ export default {
     //<<check-mobile@function>>
     //<<jquery@module>>
     $(window).resize(() => {
-      const mobile = $(window).width() < 1024
+      const mobile = $(window).width() < 1020
       if(this.$store.state.mobile !== mobile) {
         if(mobile) {
           this.$store.commit('setMobile', true)
