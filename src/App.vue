@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { parse } from 'query-string' //[[save-utm@function&!router@internal]]
+import { parse as parseQuery } from 'query-string' //[[save-utm@function&!router@internal]]
 //[[save-utm@function&!router@internal]]
 export default {
   name: 'App',
@@ -44,7 +44,7 @@ export default {
     window.dispatchEvent(event);
     //<</!jquery@module>>
     //<</check-mobile@function>>
-    this.$store.commit('saveUtm', parse(location.search)) //[[save-utm@function&!router@internal]]
+    this.$store.commit('saveUtm', parseQuery(location.search)) //[[save-utm@function&!router@internal]]
     this.$store.commit('saveUtm', this.$route.query) //[[save-utm@function&router@internal]]
   }, //[[/]]
   mounted() { //[[]]
