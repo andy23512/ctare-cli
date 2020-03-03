@@ -114,6 +114,5 @@ export default {
 
 #v-app
   height: 100%
-  min-height: 100%
   min-width: 375px
 </style>
