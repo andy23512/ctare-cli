@@ -38,6 +38,15 @@
   flex-wrap: $flex-wrap
   justify-content: $justify-content
 
+=ifont($font-size, $color: null, $line-height: null, $letter-spacing: null, $font-weight: null, $text-align: null)
+  color: $color
+  font-size: $font-size
+  font-weight: $font-weight
+  letter-spacing: $letter-spacing
+  line-height: $line-height
+  text-align: $text-align
+  text-indent: $letter-spacing
+
 =position($position, $top: null, $right: null, $bottom: null, $left: null)
   bottom: $bottom
   left: $left

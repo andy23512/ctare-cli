@@ -1,5 +1,5 @@
 <template lang="pug">
-#v-app
+#v-app: .container
   | App
   router-view //[[router@internal]]
 </template>
@@ -113,6 +113,14 @@ export default {
 @import "~@/mixin.sass"
 
 #v-app
+  background-color: white
   height: 100%
+  margin-left: auto
+  margin-right: auto
+  max-width: 1280px
   min-width: 375px
+
+@media (max-width: 1019px)
+  #v-app
+    max-width: 600px
 </style>
