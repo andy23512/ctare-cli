@@ -257,7 +257,7 @@ function copyFiles() {
 }
 function handleFavicon() {
     if (selection.other['tech-orange-favicon']) {
-        child_process_1.default.execSync('cp -rf ctare-cli/public/favicon.ico ./public/');
+        child_process_1.default.execSync('cp -rf ctare-cli/project/public/favicon.ico ./public/');
     }
 }
 function installDeps(program) {

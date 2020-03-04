@@ -188,7 +188,9 @@ function copyFiles() {
 
 function handleFavicon() {
   if (selection.other['tech-orange-favicon']) {
-    childProcess.execSync('cp -rf ctare-cli/public/favicon.ico ./public/');
+    childProcess.execSync(
+      'cp -rf ctare-cli/project/public/favicon.ico ./public/'
+    );
   }
 }
 
