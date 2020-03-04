@@ -167,9 +167,9 @@ async function cloneCtareSource() {
 function copyFiles() {
   const hasRouter = selection.internal.router;
   const hasStore = selection.internal.store;
-  childProcess.execSync('cp ctare-cli/vue.config.js .');
-  childProcess.execSync('cp -rf ctare-cli/src .');
-  childProcess.execSync('cp -rf ctare-cli/public/index.html ./public/');
+  childProcess.execSync('cp ctare-cli/project/vue.config.js .');
+  childProcess.execSync('cp -rf ctare-cli/project/src .');
+  childProcess.execSync('cp -rf ctare-cli/project/public/index.html ./public/');
   if (!hasRouter) {
     rimraf.sync('src/router/');
     rimraf.sync('src/views/');
@@ -178,7 +178,7 @@ function copyFiles() {
     rimraf.sync('src/store/');
   }
   if (selection.plugin.storybook) {
-    childProcess.execSync('cp -rf ctare-cli/storybook .');
+    childProcess.execSync('cp -rf ctare-cli/project/storybook .');
     files.push('storybook/config.js');
   } else {
     fs.unlinkSync('src/storybook.sass');
