@@ -48,7 +48,7 @@ export default {
       const sections = this.$store.state.scroll.sections
       for (let i = sections.length - 1; i >= 0; i--) {
         const sectionTop = $(`#v-${sections[i].name}`).position().top
-        const sectionBottom = sectionTop + $(`#v-${sections[i].name}`).height()
+        const sectionBottom = sectionTop + $(`#v-${sections[i].name}`).outerHeight()
         if(scrollTop >= sectionTop && scrollTop < sectionBottom) {
           if(this.$store.state.scroll.position !== sections[i].name) {
             this.$store.commit('setScrollPosition', sections[i].name)
