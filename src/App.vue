@@ -114,10 +114,10 @@ export default {
 
 #v-app
   background-color: white
-  height: 100%
   margin-left: auto
   margin-right: auto
   max-width: 1280px
+  min-height: 100%
   min-width: 375px
 
 @media (max-width: 1019px)
