@@ -153,9 +153,6 @@ function removeNotNeedFile() {
 async function cloneCtareSource() {
   return promiseSpawn('git', [
     'clone',
-    '-b',
-    'typescript',
-    '--single-branch',
     '--depth',
     '1',
     'https://github.com/andy23512/ctare-cli/'

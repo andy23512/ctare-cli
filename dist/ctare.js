@@ -221,9 +221,6 @@ function cloneCtareSource() {
         return __generator(this, function (_a) {
             return [2 /*return*/, promiseSpawn('git', [
                     'clone',
-                    '-b',
-                    'typescript',
-                    '--single-branch',
                     '--depth',
                     '1',
                     'https://github.com/andy23512/ctare-cli/'
