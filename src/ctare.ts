@@ -1,15 +1,11 @@
 #!/usr/bin/env node
+import childProcess from 'child_process';
+import fs from 'fs';
+import inquirer from 'inquirer';
+import rimraf from 'rimraf';
+import commandExists from 'command-exists';
 
-const child_process = require('child_process');
-const commandExists = require('command-exists');
-const fs = require('fs');
-const inquirer = require('inquirer');
-const path = require('path');
-const rimraf = require('rimraf');
-
-const fixedDeps = require('./lib/deps');
-const fixedDevDeps = require('./lib/dev-deps');
-const features = require('./lib/features');
+import { fixedDeps, fixedDevDeps, features } from './constants';
 
 // global variables
 const files = [
@@ -18,7 +14,7 @@ const files = [
   'src/main.js',
   'vue.config.js'
 ];
-const selection = {};
+const selection: { [key: string]: { [key: string]: boolean } } = {};
 let projectName = '';
 
 getProjectName()
@@ -38,6 +34,7 @@ getProjectName()
   .then(handleStorybook)
   .then(handleTags)
   .then(addCommit)
+  // tslint:disable-next-line: no-console
   .catch(console.error);
 
 function getProjectName() {
@@ -55,8 +52,11 @@ function getProjectName() {
 
 function checkVueCliVersion() {
   return new Promise((resolve, reject) => {
-    child_process.exec('vue -V', (err, stdout, stderr) => {
-      const mainVersionNum = +stdout.toString().replace('@vue/cli ', '').split('.')[0];
+    childProcess.exec('vue -V', (err, stdout, stderr) => {
+      const mainVersionNum = +stdout
+        .toString()
+        .replace('@vue/cli ', '')
+        .split('.')[0];
       mainVersionNum >= 4
         ? resolve()
         : reject(
@@ -79,8 +79,8 @@ function getProjectSetting() {
     router: fs.existsSync('./src/router/index.js'),
     store: fs.existsSync('./src/store/index.js')
   };
-  if(selection.internal.store) {
-    files.push('src/store/index.js')
+  if (selection.internal.store) {
+    files.push('src/store/index.js');
   }
 }
 
@@ -109,7 +109,9 @@ function getCtareConfig() {
       },
       {
         type: 'checkbox',
-        message: `Check the modules needed for your project (${fixedDeps.join(', ')} will be installed): `,
+        message: `Check the modules needed for your project (${fixedDeps.join(
+          ', '
+        )} will be installed): `,
         name: 'module',
         choices: features.module
       },
@@ -143,8 +145,10 @@ function changeDirToProject() {
 }
 
 function removeUnneedFile() {
-  if (fs.existsSync('src/components/HelloWorld.vue')) fs.unlinkSync('src/components/HelloWorld.vue');
-  if (fs.existsSync('src/assets/logo.png')) fs.unlinkSync('src/assets/logo.png');
+  if (fs.existsSync('src/components/HelloWorld.vue'))
+    fs.unlinkSync('src/components/HelloWorld.vue');
+  if (fs.existsSync('src/assets/logo.png'))
+    fs.unlinkSync('src/assets/logo.png');
   rimraf.sync('src/views/');
 }
 
@@ -165,9 +169,9 @@ function cloneCtareSource() {
 function copyFiles() {
   const hasRouter = selection.internal.router;
   const hasStore = selection.internal.store;
-  child_process.execSync('cp ctare-cli/vue.config.js .');
-  child_process.execSync('cp -rf ctare-cli/src .');
-  child_process.execSync('cp -rf ctare-cli/public/index.html ./public/');
+  childProcess.execSync('cp ctare-cli/vue.config.js .');
+  childProcess.execSync('cp -rf ctare-cli/src .');
+  childProcess.execSync('cp -rf ctare-cli/public/index.html ./public/');
   if (!hasRouter) {
     rimraf.sync('src/router/');
     rimraf.sync('src/views/');
@@ -175,27 +179,26 @@ function copyFiles() {
   if (!hasStore) {
     rimraf.sync('src/store/');
   }
-  if (selection.plugin['storybook']) {
-    child_process.execSync('cp -rf ctare-cli/storybook .');
-    files.push('storybook/config.js')
+  if (selection.plugin.storybook) {
+    childProcess.execSync('cp -rf ctare-cli/storybook .');
+    files.push('storybook/config.js');
+  } else {
+    fs.unlinkSync('src/storybook.sass');
   }
-  else {
-    fs.unlinkSync('src/storybook.sass')
+  if (!selection.plugin.storybook || !hasStore) {
+    fs.unlinkSync('src/StoreMock.js');
   }
-  if (!selection.plugin['storybook'] || !hasStore) {
-    fs.unlinkSync('src/StoreMock.js')
-  }
-  child_process.execSync('\\rm -rf ctare-cli/');
+  childProcess.execSync('\\rm -rf ctare-cli/');
 }
 
 function handleFavicon() {
   if (selection.other['tech-orange-favicon']) {
-    child_process.execSync('cp -rf ctare-cli/public/favicon.ico ./public/');
+    childProcess.execSync('cp -rf ctare-cli/public/favicon.ico ./public/');
   }
 }
 
-function installDeps(program) {
-  return (args, deps) => {
+function installDeps(program: 'yarn' | 'npm') {
+  return (args: string[], deps: string[]) => {
     return () => {
       if (deps.length > 0) {
         return promiseSpawn(program, [...args, ...deps]).catch(code => {
@@ -227,7 +230,7 @@ function installModules() {
         if (feature.packages) deps = deps.concat(feature.packages);
         if (feature.devPackages) devDeps = devDeps.concat(feature.devPackages);
       }
-    })
+    });
   });
   return install(installDepsArgs, deps)().then(
     install(installDevDepsArgs, devDeps)
@@ -250,53 +253,80 @@ function handleDistIgnore() {
 }
 
 function handleStorybook() {
-  if (selection.plugin['storybook']) {
+  if (selection.plugin.storybook) {
     return promiseSpawn('vue', ['add storybook'])
-    .then(() => {
-      child_process.execSync('\\rm -rf config/');
-      const pkg = JSON.parse(fs.readFileSync('./package.json'))
-      pkg['scripts']['storybook:serve'] = pkg['scripts']['storybook:serve'].replace('config/storybook', 'storybook')
-      pkg['scripts']['storybook:build'] = pkg['scripts']['storybook:build'].replace('config/storybook', 'storybook')
-      fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2))
-      let content = fs.readFileSync('./src/stories/index.stories.js', {encoding: 'utf-8'})
-      content = content.replace('../components/MyButton.vue', '@/components/MyButton.vue').replace('/* eslint-disable import/no-extraneous-dependencies */\n', '')
-      fs.writeFileSync('./src/stories/index.stories.js', content)
-    })
-    .catch(code => {
-      throw new Error('storybook process exited with error code ' + code);
-    })
+      .then(() => {
+        childProcess.execSync('\\rm -rf config/');
+        const pkg = JSON.parse(
+          fs.readFileSync('./package.json', { encoding: 'utf-8' })
+        );
+        pkg.scripts['storybook:serve'] = pkg.scripts['storybook:serve'].replace(
+          'config/storybook',
+          'storybook'
+        );
+        pkg.scripts['storybook:build'] = pkg.scripts['storybook:build'].replace(
+          'config/storybook',
+          'storybook'
+        );
+        fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
+        let content = fs.readFileSync('./src/stories/index.stories.js', {
+          encoding: 'utf-8'
+        });
+        content = content
+          .replace('../components/MyButton.vue', '@/components/MyButton.vue')
+          .replace(
+            '/* eslint-disable import/no-extraneous-dependencies */\n',
+            ''
+          );
+        fs.writeFileSync('./src/stories/index.stories.js', content);
+      })
+      .catch(code => {
+        throw new Error('storybook process exited with error code ' + code);
+      });
   }
 }
 
 function handleTags() {
-  function tag2var(tag) {
-    return tag.replace(/-/g, '_').replace(/\./g, '_').replace(/@/g, '$');
+  function tag2var(tag: string) {
+    return tag
+      .replace(/-/g, '_')
+      .replace(/\./g, '_')
+      .replace(/@/g, '$');
   }
-  function expressionTransform(expression) {
+  function expressionTransform(expression: string) {
     return expression.replace(/&/g, '&&').replace(/\|/g, '||');
   }
   // collect all feature tags
   const tags = {};
   Object.keys(features).forEach(category => {
-    features[category].forEach(f => { tags[`${f.name}@${category}`] = !!selection[category][f.name] });
+    features[category].forEach(f => {
+      tags[`${f.name}@${category}`] = !!selection[category][f.name];
+    });
   });
-  Object.keys(selection.internal).forEach(s => { tags[`${s}@internal`] = selection.internal[s] });
+  Object.keys(selection.internal).forEach(s => {
+    tags[`${s}@internal`] = selection.internal[s];
+  });
 
   // form a javascript code with the tags
-  const vars = Object.keys(tags).map(t => `const ${tag2var(t)} = ${tags[t]};`).join('');
+  const vars = Object.keys(tags)
+    .map(t => `const ${tag2var(t)} = ${tags[t]};`)
+    .join('');
 
   // collect all expressions from files
   const expressions = {};
   files.forEach(filename => {
-    const content = fs.readFileSync(filename, {encoding: 'utf-8'})
+    const content = fs.readFileSync(filename, { encoding: 'utf-8' });
     content.match(/(?<=\[\[|\<\<)[a-z\-.@&|!]+/g).forEach(expression => {
       expressions[expression] = true;
-    })
-  })
+    });
+  });
   const expressionList = Object.keys(expressions);
 
   // form a javascript code from the expressions
-  const statement = `[${expressionList.map(e => expressionTransform(tag2var(e))).join(',')}]`;
+  const statement = `[${expressionList
+    .map(e => expressionTransform(tag2var(e)))
+    .join(',')}]`;
+  // tslint:disable-next-line: no-eval
   const results = eval(vars + statement);
   expressionList.map((e, i) => {
     expressions[e] = results[i];
@@ -304,10 +334,9 @@ function handleTags() {
 
   // remove unneed part from file
   files.forEach(filePath => {
-    const lines = fs.readFileSync(filePath, {encoding: 'utf-8'}).split('\n');
-    const newLines = [];
-    let blockRemove = false;
-    let blockTag = null;
+    const lines = fs.readFileSync(filePath, { encoding: 'utf-8' }).split('\n');
+    const newLines: string[] = [];
+    let blockTag: null | string = null;
     let previousBomb = false;
     lines.forEach(line => {
       const expressionMatch = line.match(/(\[\[|\<\<)([a-z\-.@&|!]+)/);
@@ -317,33 +346,35 @@ function handleTags() {
       if (previousBomb && bombBMatch) newLines.pop();
       else if (endMatch) {
         if (endMatch[1] === blockTag) blockTag = null;
-      }
-      else if (blockTag) return;
+      } else if (blockTag) return;
       else if (expressionMatch) {
-        if (expressionMatch[1] === '<<' && !expressions[expressionMatch[2]]) blockTag = expressionMatch[2];
+        if (expressionMatch[1] === '<<' && !expressions[expressionMatch[2]])
+          blockTag = expressionMatch[2];
         if (expressionMatch[1] === '[[' && expressions[expressionMatch[2]]) {
           previousBomb = !!bombAMatch;
           newLines.push(line);
         }
-      }
-      else {
+      } else {
         previousBomb = !!bombAMatch;
         newLines.push(line);
       }
-    })
-    let newContent = newLines.join('\n').replace(/ ?\/\/\[\[.*$/gm, '').replace(/\n{3,}/g, '\n\n');
+    });
+    const newContent = newLines
+      .join('\n')
+      .replace(/ ?\/\/\[\[.*$/gm, '')
+      .replace(/\n{3,}/g, '\n\n');
     fs.writeFileSync(filePath, newContent);
-  })
+  });
 }
 
 function addCommit() {
-  child_process.execSync('git add .');
-  child_process.execSync('git commit -m "setup"');
+  childProcess.execSync('git add .');
+  childProcess.execSync('git commit -m "setup"');
 }
 
-function promiseSpawn(command, args) {
+function promiseSpawn(command: string, args: string[]) {
   return new Promise((resolve, reject) => {
-    child_process
+    childProcess
       .spawn(command, args, { shell: true, stdio: 'inherit' })
       .on('close', code => (code === 0 ? resolve() : reject()));
   });

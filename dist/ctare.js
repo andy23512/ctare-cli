@@ -7,15 +7,16 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             r[k] = a[j];
     return r;
 };
-var child_process = require('child_process');
-var commandExists = require('command-exists');
-var fs = require('fs');
-var inquirer = require('inquirer');
-var path = require('path');
-var rimraf = require('rimraf');
-var fixedDeps = require('./lib/deps');
-var fixedDevDeps = require('./lib/dev-deps');
-var features = require('./lib/features');
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var child_process_1 = __importDefault(require("child_process"));
+var fs_1 = __importDefault(require("fs"));
+var inquirer_1 = __importDefault(require("inquirer"));
+var rimraf_1 = __importDefault(require("rimraf"));
+var command_exists_1 = __importDefault(require("command-exists"));
+var constants_1 = require("./constants");
 // global variables
 var files = [
     'src/App.vue',
@@ -26,7 +27,7 @@ var files = [
 var selection = {};
 var projectName = '';
 getProjectName()
-    .then(function () { return commandExists('vue'); })
+    .then(function () { return command_exists_1.default('vue'); })
     .then(checkVueCliVersion)
     .then(runVueCli)
     .then(changeDirToProject)
@@ -42,6 +43,7 @@ getProjectName()
     .then(handleStorybook)
     .then(handleTags)
     .then(addCommit)
+    // tslint:disable-next-line: no-console
     .catch(console.error);
 function getProjectName() {
     return new Promise(function (resolve, reject) {
@@ -53,8 +55,11 @@ function getProjectName() {
 }
 function checkVueCliVersion() {
     return new Promise(function (resolve, reject) {
-        child_process.exec('vue -V', function (err, stdout, stderr) {
-            var mainVersionNum = +stdout.toString().replace('@vue/cli ', '').split('.')[0];
+        child_process_1.default.exec('vue -V', function (err, stdout, stderr) {
+            var mainVersionNum = +stdout
+                .toString()
+                .replace('@vue/cli ', '')
+                .split('.')[0];
             mainVersionNum >= 4
                 ? resolve()
                 : reject(new Error('Error: The version of installed Vue-cli < 4.0.0\nRun "yarn global install @vue/cli" or "npm install --global @vue/cli" to install the latest vue-cli.'));
@@ -68,8 +73,8 @@ function runVueCli() {
 }
 function getProjectSetting() {
     selection.internal = {
-        router: fs.existsSync('./src/router/index.js'),
-        store: fs.existsSync('./src/store/index.js')
+        router: fs_1.default.existsSync('./src/router/index.js'),
+        store: fs_1.default.existsSync('./src/store/index.js')
     };
     if (selection.internal.store) {
         files.push('src/store/index.js');
@@ -77,19 +82,19 @@ function getProjectSetting() {
 }
 function getCtareConfig() {
     process.stdout.write('\033c\033[3J'); // clear screen
-    var selectableFunctions = features.function.filter(function (f) {
+    var selectableFunctions = constants_1.features.function.filter(function (f) {
         if (f.depend_on) {
             return f.depend_on.every(function (d) { return selection.internal[d]; });
         }
         return true;
     });
-    return inquirer
+    return inquirer_1.default
         .prompt([
         {
             type: 'checkbox',
             message: 'Check the fonts needed for your project: ',
             name: 'font',
-            choices: features.font
+            choices: constants_1.features.font
         },
         {
             type: 'checkbox',
@@ -100,21 +105,21 @@ function getCtareConfig() {
         },
         {
             type: 'checkbox',
-            message: "Check the modules needed for your project (" + fixedDeps.join(', ') + " will be installed): ",
+            message: "Check the modules needed for your project (" + constants_1.fixedDeps.join(', ') + " will be installed): ",
             name: 'module',
-            choices: features.module
+            choices: constants_1.features.module
         },
         {
             type: 'checkbox',
             message: 'Check the plugins needed for your project: ',
             name: 'plugin',
-            choices: features.plugin
+            choices: constants_1.features.plugin
         },
         {
             type: 'checkbox',
             message: 'Check the other functions needed for your project: ',
             name: 'other',
-            choices: features.other
+            choices: constants_1.features.other
         }
     ])
         .then(function (answers) {
@@ -132,11 +137,11 @@ function changeDirToProject() {
     return Promise.resolve(process.chdir(projectName));
 }
 function removeUnneedFile() {
-    if (fs.existsSync('src/components/HelloWorld.vue'))
-        fs.unlinkSync('src/components/HelloWorld.vue');
-    if (fs.existsSync('src/assets/logo.png'))
-        fs.unlinkSync('src/assets/logo.png');
-    rimraf.sync('src/views/');
+    if (fs_1.default.existsSync('src/components/HelloWorld.vue'))
+        fs_1.default.unlinkSync('src/components/HelloWorld.vue');
+    if (fs_1.default.existsSync('src/assets/logo.png'))
+        fs_1.default.unlinkSync('src/assets/logo.png');
+    rimraf_1.default.sync('src/views/');
 }
 function cloneCtareSource() {
     return promiseSpawn('git', [
@@ -154,31 +159,31 @@ function cloneCtareSource() {
 function copyFiles() {
     var hasRouter = selection.internal.router;
     var hasStore = selection.internal.store;
-    child_process.execSync('cp ctare-cli/vue.config.js .');
-    child_process.execSync('cp -rf ctare-cli/src .');
-    child_process.execSync('cp -rf ctare-cli/public/index.html ./public/');
+    child_process_1.default.execSync('cp ctare-cli/vue.config.js .');
+    child_process_1.default.execSync('cp -rf ctare-cli/src .');
+    child_process_1.default.execSync('cp -rf ctare-cli/public/index.html ./public/');
     if (!hasRouter) {
-        rimraf.sync('src/router/');
-        rimraf.sync('src/views/');
+        rimraf_1.default.sync('src/router/');
+        rimraf_1.default.sync('src/views/');
     }
     if (!hasStore) {
-        rimraf.sync('src/store/');
+        rimraf_1.default.sync('src/store/');
     }
-    if (selection.plugin['storybook']) {
-        child_process.execSync('cp -rf ctare-cli/storybook .');
+    if (selection.plugin.storybook) {
+        child_process_1.default.execSync('cp -rf ctare-cli/storybook .');
         files.push('storybook/config.js');
     }
     else {
-        fs.unlinkSync('src/storybook.sass');
+        fs_1.default.unlinkSync('src/storybook.sass');
     }
-    if (!selection.plugin['storybook'] || !hasStore) {
-        fs.unlinkSync('src/StoreMock.js');
+    if (!selection.plugin.storybook || !hasStore) {
+        fs_1.default.unlinkSync('src/StoreMock.js');
     }
-    child_process.execSync('\\rm -rf ctare-cli/');
+    child_process_1.default.execSync('\\rm -rf ctare-cli/');
 }
 function handleFavicon() {
     if (selection.other['tech-orange-favicon']) {
-        child_process.execSync('cp -rf ctare-cli/public/favicon.ico ./public/');
+        child_process_1.default.execSync('cp -rf ctare-cli/public/favicon.ico ./public/');
     }
 }
 function installDeps(program) {
@@ -197,16 +202,16 @@ function installDeps(program) {
 }
 function installModules() {
     // determine package manager to use
-    var hasYarn = fs.existsSync('yarn.lock');
+    var hasYarn = fs_1.default.existsSync('yarn.lock');
     var installDepsProgram = hasYarn ? 'yarn' : 'npm';
     var installDepsArgs = hasYarn ? ['add'] : ['install', '--save'];
     var installDevDepsArgs = hasYarn ? ['add', '-D'] : ['install', '-D'];
     var install = installDeps(installDepsProgram);
     // collect modules that need to installed
-    var deps = fixedDeps;
-    var devDeps = fixedDevDeps;
-    Object.keys(features).forEach(function (category) {
-        features[category].forEach(function (feature) {
+    var deps = constants_1.fixedDeps;
+    var devDeps = constants_1.fixedDevDeps;
+    Object.keys(constants_1.features).forEach(function (category) {
+        constants_1.features[category].forEach(function (feature) {
             if (selection[category][feature.name]) {
                 if (feature.packages)
                     deps = deps.concat(feature.packages);
@@ -220,28 +225,32 @@ function installModules() {
 function editBrowsersList() {
     var browserslist = ['> 1% in tw', 'last 3 versions', 'not ie <= 11'];
     return new Promise(function (resolve, reject) {
-        fs.writeFile('.browserslistrc', browserslist.join('\n'), function (err) {
+        fs_1.default.writeFile('.browserslistrc', browserslist.join('\n'), function (err) {
             return !err ? resolve() : reject(err);
         });
     });
 }
 function handleDistIgnore() {
     if (selection.function['add-dist-to-git-repo']) {
-        fs.appendFileSync('.gitignore', '\n# add by ctare\n!/dist');
+        fs_1.default.appendFileSync('.gitignore', '\n# add by ctare\n!/dist');
     }
 }
 function handleStorybook() {
-    if (selection.plugin['storybook']) {
+    if (selection.plugin.storybook) {
         return promiseSpawn('vue', ['add storybook'])
             .then(function () {
-            child_process.execSync('\\rm -rf config/');
-            var pkg = JSON.parse(fs.readFileSync('./package.json'));
-            pkg['scripts']['storybook:serve'] = pkg['scripts']['storybook:serve'].replace('config/storybook', 'storybook');
-            pkg['scripts']['storybook:build'] = pkg['scripts']['storybook:build'].replace('config/storybook', 'storybook');
-            fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
-            var content = fs.readFileSync('./src/stories/index.stories.js', { encoding: 'utf-8' });
-            content = content.replace('../components/MyButton.vue', '@/components/MyButton.vue').replace('/* eslint-disable import/no-extraneous-dependencies */\n', '');
-            fs.writeFileSync('./src/stories/index.stories.js', content);
+            child_process_1.default.execSync('\\rm -rf config/');
+            var pkg = JSON.parse(fs_1.default.readFileSync('./package.json', { encoding: 'utf-8' }));
+            pkg.scripts['storybook:serve'] = pkg.scripts['storybook:serve'].replace('config/storybook', 'storybook');
+            pkg.scripts['storybook:build'] = pkg.scripts['storybook:build'].replace('config/storybook', 'storybook');
+            fs_1.default.writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
+            var content = fs_1.default.readFileSync('./src/stories/index.stories.js', {
+                encoding: 'utf-8'
+            });
+            content = content
+                .replace('../components/MyButton.vue', '@/components/MyButton.vue')
+                .replace('/* eslint-disable import/no-extraneous-dependencies */\n', '');
+            fs_1.default.writeFileSync('./src/stories/index.stories.js', content);
         })
             .catch(function (code) {
             throw new Error('storybook process exited with error code ' + code);
@@ -250,39 +259,50 @@ function handleStorybook() {
 }
 function handleTags() {
     function tag2var(tag) {
-        return tag.replace(/-/g, '_').replace(/\./g, '_').replace(/@/g, '$');
+        return tag
+            .replace(/-/g, '_')
+            .replace(/\./g, '_')
+            .replace(/@/g, '$');
     }
     function expressionTransform(expression) {
         return expression.replace(/&/g, '&&').replace(/\|/g, '||');
     }
     // collect all feature tags
     var tags = {};
-    Object.keys(features).forEach(function (category) {
-        features[category].forEach(function (f) { tags[f.name + "@" + category] = !!selection[category][f.name]; });
+    Object.keys(constants_1.features).forEach(function (category) {
+        constants_1.features[category].forEach(function (f) {
+            tags[f.name + "@" + category] = !!selection[category][f.name];
+        });
     });
-    Object.keys(selection.internal).forEach(function (s) { tags[s + "@internal"] = selection.internal[s]; });
+    Object.keys(selection.internal).forEach(function (s) {
+        tags[s + "@internal"] = selection.internal[s];
+    });
     // form a javascript code with the tags
-    var vars = Object.keys(tags).map(function (t) { return "const " + tag2var(t) + " = " + tags[t] + ";"; }).join('');
+    var vars = Object.keys(tags)
+        .map(function (t) { return "const " + tag2var(t) + " = " + tags[t] + ";"; })
+        .join('');
     // collect all expressions from files
     var expressions = {};
     files.forEach(function (filename) {
-        var content = fs.readFileSync(filename, { encoding: 'utf-8' });
+        var content = fs_1.default.readFileSync(filename, { encoding: 'utf-8' });
         content.match(/(?<=\[\[|\<\<)[a-z\-.@&|!]+/g).forEach(function (expression) {
             expressions[expression] = true;
         });
     });
     var expressionList = Object.keys(expressions);
     // form a javascript code from the expressions
-    var statement = "[" + expressionList.map(function (e) { return expressionTransform(tag2var(e)); }).join(',') + "]";
+    var statement = "[" + expressionList
+        .map(function (e) { return expressionTransform(tag2var(e)); })
+        .join(',') + "]";
+    // tslint:disable-next-line: no-eval
     var results = eval(vars + statement);
     expressionList.map(function (e, i) {
         expressions[e] = results[i];
     });
     // remove unneed part from file
     files.forEach(function (filePath) {
-        var lines = fs.readFileSync(filePath, { encoding: 'utf-8' }).split('\n');
+        var lines = fs_1.default.readFileSync(filePath, { encoding: 'utf-8' }).split('\n');
         var newLines = [];
-        var blockRemove = false;
         var blockTag = null;
         var previousBomb = false;
         lines.forEach(function (line) {
@@ -311,17 +331,20 @@ function handleTags() {
                 newLines.push(line);
             }
         });
-        var newContent = newLines.join('\n').replace(/ ?\/\/\[\[.*$/gm, '').replace(/\n{3,}/g, '\n\n');
-        fs.writeFileSync(filePath, newContent);
+        var newContent = newLines
+            .join('\n')
+            .replace(/ ?\/\/\[\[.*$/gm, '')
+            .replace(/\n{3,}/g, '\n\n');
+        fs_1.default.writeFileSync(filePath, newContent);
     });
 }
 function addCommit() {
-    child_process.execSync('git add .');
-    child_process.execSync('git commit -m "setup"');
+    child_process_1.default.execSync('git add .');
+    child_process_1.default.execSync('git commit -m "setup"');
 }
 function promiseSpawn(command, args) {
     return new Promise(function (resolve, reject) {
-        child_process
+        child_process_1.default
             .spawn(command, args, { shell: true, stdio: 'inherit' })
             .on('close', function (code) { return (code === 0 ? resolve() : reject()); });
     });
