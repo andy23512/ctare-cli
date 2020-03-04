@@ -7,13 +7,12 @@ exports.features = {
     function: [
         {
             name: 'check-mobile',
-            depend_on: ['store'],
+            dependOn: ['store'],
             affectedFiles: ['App.vue', 'store.js']
         },
         {
             name: 'save-utm',
-            cond: ['router'],
-            depend_on: ['store'],
+            dependOn: ['store'],
             affectedFiles: ['App.vue', 'store.js']
         },
         {
@@ -31,7 +30,7 @@ exports.features = {
         { name: 'add-dist-to-git-repo' },
         {
             name: 'track-scroll-position',
-            depend_on: ['store'],
+            dependOn: ['store'],
             affectedFiles: ['App.vue', 'store.js']
         }
     ],

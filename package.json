@@ -9,7 +9,8 @@
   },
   "scripts": {
     "start": "ts-node src/ctare.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "precommit-build": "tsc && git add dist/"
   },
   "files": [
     "main.js",
