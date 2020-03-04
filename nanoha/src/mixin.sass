@@ -1,0 +1,59 @@
+=background($background-image, $background-size: cover, $background-repeat: null, $background-position: center center)
+  background-image: $background-image
+  background-position: $background-position
+  background-repeat: $background-repeat
+  background-size: $background-size
+
+=border($border-width, $border-color: null, $border-radius: null, $border-image: null)
+  border-color: $border-color
+  border-image: $border-image
+  border-radius: $border-radius
+  border-style: solid
+  border-width: $border-width
+
+=circle($size)
+  border-radius: 50%
+  height: $size
+  width: $size
+
+=flex($justify-content, $align-items: null, $flex-direction: null, $flex-wrap: null)
+  align-items: $align-items
+  display: flex
+  flex-direction: $flex-direction
+  flex-wrap: $flex-wrap
+  justify-content: $justify-content
+
+=font($font-size, $color: null, $line-height: null, $letter-spacing: null, $font-weight: null, $text-align: null)
+  color: $color
+  font-size: $font-size
+  font-weight: $font-weight
+  letter-spacing: $letter-spacing
+  line-height: $line-height
+  text-align: $text-align
+
+=iflex($justify-content, $align-items: null, $flex-direction: null, $flex-wrap: null)
+  align-items: $align-items
+  display: inline-flex
+  flex-direction: $flex-direction
+  flex-wrap: $flex-wrap
+  justify-content: $justify-content
+
+=ifont($font-size, $color: null, $line-height: null, $letter-spacing: null, $font-weight: null, $text-align: null)
+  color: $color
+  font-size: $font-size
+  font-weight: $font-weight
+  letter-spacing: $letter-spacing
+  line-height: $line-height
+  text-align: $text-align
+  text-indent: $letter-spacing
+
+=position($position, $top: null, $right: null, $bottom: null, $left: null)
+  bottom: $bottom
+  left: $left
+  position: $position
+  right: $right
+  top: $top
+
+=size($width, $height: $width)
+  height: $height
+  width: $width

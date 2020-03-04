@@ -1,0 +1,25 @@
+@import '~@/reset-mixin.sass'
++reset-body
++reset-box-sizing
+
+html
+  font-family: 'WenQuanYi Zen Hei', 'PingFang TC', 'Microsoft JhengHei'
+body
+  background-color: #F0F0F0
+
+.container
+  margin-left: auto
+  margin-right: auto
+  width: 1140px
+
+@media (max-width: 1199px)
+  .container
+    width: 960px
+
+@media (max-width: 1019px)
+  .container
+    max-width: 600px
+    min-width: 375px
+    padding-left: 30px
+    padding-right: 30px
+    width: 100%
