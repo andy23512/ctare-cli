@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// tslint:disable: no-console
 import childProcess from 'child_process';
 import fs from 'fs';
 import inquirer from 'inquirer';
@@ -82,7 +83,7 @@ function getProjectSetting() {
 }
 
 async function getCtareConfig() {
-  process.stdout.write('\033c\033[3J'); // clear screen
+  console.clear();
   const selectableFunctions = features.function.filter(f => {
     if (f.dependOn) {
       return f.dependOn.every(d => selection.internal[d]);
