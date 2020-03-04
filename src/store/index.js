@@ -15,13 +15,17 @@ export default new Vuex.Store({
       utm_content: null,
     },
     //<</save-utm@function>>
-    //<<check-mobile@function&vue-scrollto@module|track-scroll-position@function>>
+    //<<vue-scrollto@module|track-scroll-position@function>>
     scroll: {
-      offset: 0, //[[check-mobile@function&vue-scrollto@module]]
-      sections: [], //[[track-scroll-position@function]]
-      position: '', //[[track-scroll-position@function]]
+      offset: 0, //[[vue-scrollto@module]]
+      //<<track-scroll-position@function>>
+      sections: [
+        // { name: '', anchor: '' }
+      ],
+      position: '',
+      //<</track-scroll-position@function>>
     },
-    //<</check-mobile@function&vue-scrollto@module|track-scroll-position@function>>
+    //<</vue-scrollto@module|track-scroll-position@function>>
   },
   mutations: {
     //<<save-utm@function>>
@@ -38,11 +42,11 @@ export default new Vuex.Store({
       state.mobile = mobile
     },
     //<</check-mobile@function>>
-    //<<check-mobile@function&vue-scrollto@module>>
+    //<<vue-scrollto@module>>
     setScrollOffset(state, offset) {
       state.scroll.offset = offset
     },
-    //<</check-mobile@function&vue-scrollto@module>>
+    //<</vue-scrollto@module>>
     //<<track-scroll-position@function>>
     setScrollPosition(state, position) {
       state.scroll.position = position

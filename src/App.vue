@@ -46,12 +46,20 @@ export default {
       const scrollTop = $(window).scrollTop() + this.$store.state.scroll.offset
       const sections = this.$store.state.scroll.sections
       for (let i = sections.length - 1; i >= 0; i--) {
-        if(scrollTop >= $(`#v-${sections[i]}`).position().top) {
-          if(this.$store.state.scroll.position !== sections[i]) {
-            this.$store.commit('setScrollPosition', sections[i])
-            history.replaceState(null, null, `#${sections[i]}`)
+        const sectionTop = $(`#v-${sections[i].name}`).position().top
+        const sectionBottom = sectionTop + $(`#v-${sections[i].name}`).height()
+        if(scrollTop >= sectionTop && scrollTop < sectionBottom) {
+          if(this.$store.state.scroll.position !== sections[i].name) {
+            this.$store.commit('setScrollPosition', sections[i].name)
+            history.replaceState(null, null, `#${sections[i].anchor}`)
           }
           break
+        }
+        else {
+          if(this.$store.state.scroll.position !== '') {
+            this.$store.commit('setScrollPosition', '')
+            history.replaceState(null, null, '#')
+          }
         }
       }
     })
