@@ -34,9 +34,15 @@ export default {
     setTimeout(() => {
       if(location.hash) {
         if($(window).scrollTop() === 0) {
-          this.$scrollTo(`#v-${location.hash.substr(1)}`, 0, {
-            offset: -this.$store.state.scroll.offset
-          })
+          const sections = this.$store.state.scroll.sections
+          for (let i = sections.length - 1; i >= 0; i--) {
+            if(location.hash.substr(1) === sections[i].anchor) {
+              this.$scrollTo(`#v-${sections[i].name}`, 0, {
+                offset: -this.$store.state.scroll.offset
+              })
+              break
+            }
+          }
         }
       } else {
         history.replaceState(null, null, '#')
