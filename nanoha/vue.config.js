@@ -1,8 +1,16 @@
+const webpack = require('webpack')
 
 module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   chainWebpack(config) {
+    config
+      .plugin('provide')
+      .use(webpack.ProvidePlugin, [{
+        $: 'jquery/dist/jquery.slim.js',
+        jQuery: 'jquery/dist/jquery.slim.js',
+      }])
+
     if(config.get('mode') === 'production') {
     }
   },
