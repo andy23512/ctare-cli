@@ -1,6 +1,7 @@
 export interface Dict<T> {
   [key: string]: T;
 }
+export type BooleanDict = Dict<boolean>;
 export interface Feature {
   name: string;
   affectedFiles?: string[];

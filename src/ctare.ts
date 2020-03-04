@@ -6,7 +6,7 @@ import rimraf from 'rimraf';
 import commandExists from 'command-exists';
 
 import { fixedDeps, fixedDevDeps, features } from './constants';
-import { Dict } from './interfaces';
+import { Dict, BooleanDict } from './interfaces';
 
 // global variables
 const files = [
@@ -15,40 +15,36 @@ const files = [
   'src/main.js',
   'vue.config.js'
 ];
-const selection: { [key: string]: { [key: string]: boolean } } = {};
+const selection: Dict<BooleanDict> = {};
 let projectName = '';
 
-getProjectName()
-  .then(() => commandExists('vue'))
-  .then(checkVueCliVersion)
-  .then(runVueCli)
-  .then(changeDirToProject)
-  .then(getProjectSetting)
-  .then(getCtareConfig)
-  .then(removeUnneedFile)
-  .then(cloneCtareSource)
-  .then(handleFavicon)
-  .then(copyFiles)
-  .then(installModules)
-  .then(editBrowsersList)
-  .then(handleDistIgnore)
-  .then(handleStorybook)
-  .then(handleTags)
-  .then(addCommit)
-  // tslint:disable-next-line: no-console
-  .catch(console.error);
+(async () => {
+  getProjectName();
+  await commandExists('vue');
+  await checkVueCliVersion();
+  await runVueCli();
+  await changeDirToProject();
+  getProjectSetting();
+  await getCtareConfig();
+  removeNotNeedFile();
+  await cloneCtareSource();
+  handleFavicon();
+  copyFiles();
+  await installModules();
+  await editBrowsersList();
+  handleDistIgnore();
+  await handleStorybook();
+  handleTags();
+  addCommit();
+})();
 
 function getProjectName() {
-  return new Promise((resolve, reject) => {
-    projectName = process.argv[2];
-    projectName
-      ? resolve(projectName)
-      : reject(
-          new Error(
-            'Error: No project name is given\nUsage: ./ctare.js <project-name>'
-          )
-        );
-  });
+  projectName = process.argv[2];
+  if (!projectName) {
+    throw new Error(
+      'Error: No project name is given\nUsage: ./ctare.js <project-name>'
+    );
+  }
 }
 
 function checkVueCliVersion() {
@@ -69,7 +65,7 @@ function checkVueCliVersion() {
   });
 }
 
-function runVueCli() {
+async function runVueCli() {
   return promiseSpawn('vue', ['create', projectName]).catch(code => {
     throw new Error('Vue-cli process exited with error code ' + code);
   });
@@ -85,7 +81,7 @@ function getProjectSetting() {
   }
 }
 
-function getCtareConfig() {
+async function getCtareConfig() {
   process.stdout.write('\033c\033[3J'); // clear screen
   const selectableFunctions = features.function.filter(f => {
     if (f.dependOn) {
@@ -141,11 +137,11 @@ function getCtareConfig() {
     });
 }
 
-function changeDirToProject() {
+async function changeDirToProject() {
   return Promise.resolve(process.chdir(projectName));
 }
 
-function removeUnneedFile() {
+function removeNotNeedFile() {
   if (fs.existsSync('src/components/HelloWorld.vue'))
     fs.unlinkSync('src/components/HelloWorld.vue');
   if (fs.existsSync('src/assets/logo.png'))
@@ -153,7 +149,7 @@ function removeUnneedFile() {
   rimraf.sync('src/views/');
 }
 
-function cloneCtareSource() {
+async function cloneCtareSource() {
   return promiseSpawn('git', [
     'clone',
     '-b',
@@ -200,7 +196,7 @@ function handleFavicon() {
 
 function installDeps(program: 'yarn' | 'npm') {
   return (args: string[], deps: string[]) => {
-    return () => {
+    return async () => {
       if (deps.length > 0) {
         return promiseSpawn(program, [...args, ...deps]).catch(code => {
           throw new Error(
@@ -214,7 +210,7 @@ function installDeps(program: 'yarn' | 'npm') {
   };
 }
 
-function installModules() {
+async function installModules() {
   // determine package manager to use
   const hasYarn = fs.existsSync('yarn.lock');
   const installDepsProgram = hasYarn ? 'yarn' : 'npm';
@@ -238,7 +234,7 @@ function installModules() {
   );
 }
 
-function editBrowsersList() {
+async function editBrowsersList() {
   const browserslist = ['> 1% in tw', 'last 3 versions', 'not ie <= 11'];
   return new Promise((resolve, reject) => {
     fs.writeFile('.browserslistrc', browserslist.join('\n'), err =>
@@ -253,7 +249,7 @@ function handleDistIgnore() {
   }
 }
 
-function handleStorybook() {
+async function handleStorybook() {
   if (selection.plugin.storybook) {
     return promiseSpawn('vue', ['add storybook'])
       .then(() => {
@@ -298,7 +294,7 @@ function handleTags() {
     return expression.replace(/&/g, '&&').replace(/\|/g, '||');
   }
   // collect all feature tags
-  const tags: Dict<boolean> = {};
+  const tags: BooleanDict = {};
   Object.keys(features).forEach(category => {
     features[category].forEach(f => {
       tags[`${f.name}@${category}`] = !!selection[category][f.name];
@@ -314,7 +310,7 @@ function handleTags() {
     .join('');
 
   // collect all expressions from files
-  const expressions: Dict<boolean> = {};
+  const expressions: BooleanDict = {};
   files.forEach(filename => {
     const content = fs.readFileSync(filename, { encoding: 'utf-8' });
     if (content) {
@@ -377,7 +373,7 @@ function addCommit() {
   childProcess.execSync('git commit -m "setup"');
 }
 
-function promiseSpawn(command: string, args: string[]) {
+async function promiseSpawn(command: string, args: string[]) {
   return new Promise((resolve, reject) => {
     childProcess
       .spawn(command, args, { shell: true, stdio: 'inherit' })
