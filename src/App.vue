@@ -11,8 +11,8 @@ export default {
   name: 'App',
   created() { //[[]]
     document.cookie=`XSRF-TOKEN=${Math.random().toString(36).substr(2)}` //[[axios@module]]
-    //<<check-mobile@function>>
-    $(window).resize(() => {
+    $(window).resize(() => { //[[]]
+      //<<check-mobile@function>>
       const mobile = $(window).width() < 1020
       if(this.$store.state.mobile !== mobile) {
         if(mobile) {
@@ -23,8 +23,9 @@ export default {
           this.$store.commit('setScrollOffset', 0) //[[vue-scrollto@module]]
         }
       }
-    }).resize()
-    //<</check-mobile@function>>
+      //<</check-mobile@function>>
+      $(window).scroll() //[[track-scroll-position@function]]
+    }).resize() //[[/]]
     this.$store.commit('saveUtm', parseQuery(location.search)) //[[save-utm@function&!router@internal]]
     this.$store.commit('saveUtm', this.$route.query) //[[save-utm@function&router@internal]]
   }, //[[/]]
