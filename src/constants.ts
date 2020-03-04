@@ -1,17 +1,18 @@
+import { Dict, Feature } from './interfaces';
+
 export const fixedDeps = ['ramda', 'jquery'];
 export const fixedDevDeps = ['pug', 'pug-plain-loader'];
-export const features = {
+export const features: Dict<Feature[]> = {
   font: [{ name: 'noto-sans-tc', affectedFiles: ['global.sass'] }],
   function: [
     {
       name: 'check-mobile',
-      depend_on: ['store'],
+      dependOn: ['store'],
       affectedFiles: ['App.vue', 'store.js']
     },
     {
       name: 'save-utm',
-      cond: ['router'],
-      depend_on: ['store'],
+      dependOn: ['store'],
       affectedFiles: ['App.vue', 'store.js']
     },
     {
@@ -29,7 +30,7 @@ export const features = {
     { name: 'add-dist-to-git-repo' },
     {
       name: 'track-scroll-position',
-      depend_on: ['store'],
+      dependOn: ['store'],
       affectedFiles: ['App.vue', 'store.js']
     }
   ],

@@ -6,6 +6,7 @@ import rimraf from 'rimraf';
 import commandExists from 'command-exists';
 
 import { fixedDeps, fixedDevDeps, features } from './constants';
+import { Dict } from './interfaces';
 
 // global variables
 const files = [
@@ -87,8 +88,8 @@ function getProjectSetting() {
 function getCtareConfig() {
   process.stdout.write('\033c\033[3J'); // clear screen
   const selectableFunctions = features.function.filter(f => {
-    if (f.depend_on) {
-      return f.depend_on.every(d => selection.internal[d]);
+    if (f.dependOn) {
+      return f.dependOn.every(d => selection.internal[d]);
     }
     return true;
   });
@@ -130,9 +131,9 @@ function getCtareConfig() {
     ])
     .then(answers => {
       // parse selected features
-      Object.keys(answers).forEach(category => {
-        const categorySelection = {};
-        answers[category].forEach(c => {
+      Object.entries(answers).forEach(([category, categoryAnswers]) => {
+        const categorySelection: { [key: string]: boolean } = {};
+        categoryAnswers.forEach((c: string) => {
           categorySelection[c] = true;
         });
         selection[category] = categorySelection;
@@ -224,8 +225,8 @@ function installModules() {
   // collect modules that need to installed
   let deps = fixedDeps;
   let devDeps = fixedDevDeps;
-  Object.keys(features).forEach(category => {
-    features[category].forEach(feature => {
+  Object.entries(features).forEach(([category, categoryFeatures]) => {
+    categoryFeatures.forEach(feature => {
       if (selection[category][feature.name]) {
         if (feature.packages) deps = deps.concat(feature.packages);
         if (feature.devPackages) devDeps = devDeps.concat(feature.devPackages);
@@ -297,7 +298,7 @@ function handleTags() {
     return expression.replace(/&/g, '&&').replace(/\|/g, '||');
   }
   // collect all feature tags
-  const tags = {};
+  const tags: Dict<boolean> = {};
   Object.keys(features).forEach(category => {
     features[category].forEach(f => {
       tags[`${f.name}@${category}`] = !!selection[category][f.name];
@@ -313,12 +314,16 @@ function handleTags() {
     .join('');
 
   // collect all expressions from files
-  const expressions = {};
+  const expressions: Dict<boolean> = {};
   files.forEach(filename => {
     const content = fs.readFileSync(filename, { encoding: 'utf-8' });
-    content.match(/(?<=\[\[|\<\<)[a-z\-.@&|!]+/g).forEach(expression => {
-      expressions[expression] = true;
-    });
+    if (content) {
+      (content.match(/(?<=\[\[|\<\<)[a-z\-.@&|!]+/g) || []).forEach(
+        expression => {
+          expressions[expression] = true;
+        }
+      );
+    }
   });
   const expressionList = Object.keys(expressions);
 
