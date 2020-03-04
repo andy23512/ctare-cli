@@ -215,7 +215,7 @@ function installModules() {
   const install = installDeps(installDepsProgram);
 
   // collect modules that need to installed
-  let deps = ['ramda'];
+  let deps = ['ramda', 'jquery'];
   let devDeps = fixedDevDeps;
   Object.keys(features).forEach(category => {
     features[category].forEach(feature => {

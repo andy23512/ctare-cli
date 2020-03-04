@@ -1,10 +1,9 @@
-const webpack = require('webpack') //[[jquery@module]]
+const webpack = require('webpack')
 
 module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   chainWebpack(config) {
-    //<<jquery@module>>
     config
       .plugin('provide')
       .use(webpack.ProvidePlugin, [{
@@ -12,7 +11,6 @@ module.exports = {
         jQuery: 'jquery/dist/jquery.slim.js',
       }])
 
-    //<</jquery@module>>
     if(config.get('mode') === 'production') {
       //<<image-optimization@function>>
       config.module.rules.delete('images')
@@ -42,7 +40,7 @@ module.exports = {
     port: process.env.DEV_PORT || 8080,
     proxy: { '/api': { target: `${process.env.API_HOST || 'localhost'}:${process.env.API_PORT || 8000}` } },
   },
-  //<<jquery@module&storybook@plugin>>
+  //<<storybook@plugin>>
   pluginOptions: {
     storybook: {
       allowedPlugins: [
@@ -50,5 +48,5 @@ module.exports = {
       ]
     }
   },
-  //<</jquery@module&storybook@plugin>>
+  //<</storybook@plugin>>
 }
