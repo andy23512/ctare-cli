@@ -7,8 +7,9 @@ const inquirer = require('inquirer');
 const path = require('path');
 const rimraf = require('rimraf');
 
-const features = require('./lib/features');
+const fixedDeps = require('./lib/deps');
 const fixedDevDeps = require('./lib/dev-deps');
+const features = require('./lib/features');
 
 // global variables
 const files = [
@@ -108,7 +109,7 @@ function getCtareConfig() {
       },
       {
         type: 'checkbox',
-        message: 'Check the modules needed for your project: ',
+        message: `Check the modules needed for your project (${fixedDeps.join(', ')} will be installed): `,
         name: 'module',
         choices: features.module
       },
@@ -215,7 +216,7 @@ function installModules() {
   const install = installDeps(installDepsProgram);
 
   // collect modules that need to installed
-  let deps = ['ramda', 'jquery'];
+  let deps = fixedDeps;
   let devDeps = fixedDevDeps;
   Object.keys(features).forEach(category => {
     features[category].forEach(feature => {
