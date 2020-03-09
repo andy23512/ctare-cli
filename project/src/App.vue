@@ -63,7 +63,7 @@ export default {
           }
         }
       }
-      if(!anchor) {
+      if(!anchor && this.$store.state.scroll.position !== '') {
         this.$store.commit('setScrollPosition', '')
         history.replaceState(null, null, '#')
       }
