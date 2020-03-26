@@ -22,7 +22,8 @@
       cursor: auto
 
 =reset-body
-  html, body
+  html,
+  body
     height: 100%
   body
     overflow-x: hidden
@@ -30,7 +31,9 @@
 =reset-box-sizing
   html
     box-sizing: border-box
-  *, *::before, *::after
+  *,
+  *::before,
+  *::after
     box-sizing: inherit
 
 =reset-em
@@ -49,7 +52,12 @@
     margin: 0
 
 =reset-h
-  h1, h2, h3, h4, h5, h6
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6
     font-size: 1em
     font-weight: normal
     margin-bottom: 0
@@ -74,12 +82,17 @@
     outline: none
     &::-ms-clear
       display: none
-  input[type='email'], input[type="search"], input[type='tel'], input[type='text']
+  input[type="search"],
+  input[type='date'],
+  input[type='email'],
+  input[type='tel'],
+  input[type='text']
     appearance: none
     background-color: white
     padding-left: .5em
     padding-right: .5em
-  input[type='checkbox'], input[type='radio']
+  input[type='checkbox'],
+  input[type='radio']
     cursor: pointer
     margin-right: .5em
     &:disabled
@@ -123,7 +136,8 @@
     resize: none
 
 =reset-l
-  ol, ul
+  ol,
+  ul
     list-style-position: inside
     margin-bottom: 0
     margin-top: 0
