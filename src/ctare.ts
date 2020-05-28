@@ -344,7 +344,10 @@ function handleTags() {
       const endMatch = line.match(/\<\<\/([a-z\-.@&|!]+)/);
       const bombAMatch = line.match(/(\[\[\]\])/);
       const bombBMatch = line.match(/(\[\[\/\]\])/);
-      if (previousBomb && bombBMatch) newLines.pop();
+      if (previousBomb && bombBMatch) {
+        newLines.pop();
+        previousBomb = false;
+      }
       else if (endMatch) {
         if (endMatch[1] === blockTag) blockTag = null;
       } else if (blockTag) return;
