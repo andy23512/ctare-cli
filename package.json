@@ -1,0 +1,48 @@
+{
+  "name": "ctare-cli",
+  "version": "1.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/andy23512/ctare-cli.git"
+  },
+  "author": "andy23512 <andy23512@gmail.com>",
+  "license": "MIT",
+  "bin": {
+    "ctare": "main.js"
+  },
+  "scripts": {
+    "start": "ts-node src/ctare.ts",
+    "build": "tsc",
+    "precommit-build": "tsc && git add dist/"
+  },
+  "files": [
+    "main.js",
+    "dist/ctare.js",
+    "dist/constants.js",
+    "project"
+  ],
+  "pre-commit": [
+    "precommit-build"
+  ],
+  "dependencies": {
+    "command-exists": "^1.2.7",
+    "inquirer": "^6.2.2",
+    "rimraf": "^2.6.2"
+  },
+  "devDependencies": {
+    "@types/command-exists": "^1.2.0",
+    "@types/inquirer": "^6.5.0",
+    "@types/node": "^13.7.7",
+    "@types/rimraf": "^2.0.3",
+    "precommit-hook": "^3.0.0",
+    "ts-node": "^8.6.2",
+    "tslint": "^6.0.0",
+    "typescript": "^3.8.3"
+  },
+  "description": "A @vue/cli wrapper for CTARE-style Vue ## Notice - This wrapper is currently only compatible with macOS. ## Requirement - (global module) [@vue/cli@4](https://www.npmjs.com/package/@vue/cli) - git ## Install ``` npm i -g andy23512/ctare-cli (or yarn global add andy23512/ctare-cli) ``` ## Usage ### Generate a CTARE project ``` $ ctare [project name] ```",
+  "bugs": {
+    "url": "https://github.com/andy23512/ctare-cli/issues"
+  },
+  "homepage": "https://github.com/andy23512/ctare-cli#readme",
+  "main": "main.js"
+}
