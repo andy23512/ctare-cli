@@ -8,6 +8,10 @@
  
 ### Fixed
 
+## [1.1.2] - 2020-08-28
+### Changed
+- Remove overflow-x: hidden in reset-body mixin
+
 ## [1.1.1] - 2020-08-12
 
 ### Added
