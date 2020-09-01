@@ -11,7 +11,7 @@
 ## [1.1.3] - 2020-09-01
 ### Changed
 - Set `pointer-events: none` descendants of button
-- Stop hiding ms-clear and ms-expaned of input and select
+- Stop hiding ms-clear and ms-expand of input and select
 
 ## [1.1.2] - 2020-08-28
 ### Changed
