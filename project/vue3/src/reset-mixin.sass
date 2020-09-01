@@ -20,6 +20,8 @@
     padding: 0
     &:disabled
       cursor: auto
+    *
+      pointer-events: none
 
 =reset-body
   html,
@@ -78,8 +80,6 @@
     font-size: 16px
     line-height: normal
     outline: none
-    &::-ms-clear
-      display: none
   input[type="search"],
   input[type='date'],
   input[type='email'],
@@ -117,8 +117,6 @@
     outline: none
     padding-left: .5em
     padding-right: 2em
-    &::-ms-expand
-      display: none
     &:disabled
       cursor: default
 
