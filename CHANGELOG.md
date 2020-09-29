@@ -8,6 +8,10 @@
  
 ### Fixed
 
+## [1.1.4] - 2020-09-29
+### Changed
+- Add load font-weight 500 in noto-sans-tc
+
 ## [1.1.3] - 2020-09-01
 ### Changed
 - Set `pointer-events: none` descendants of button
