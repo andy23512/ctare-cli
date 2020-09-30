@@ -8,6 +8,10 @@
  
 ### Fixed
 
+## [1.1.5] - 2020-09-30
+### Changed
+- Add opacity: 1 to reset mixin of disabled select
+
 ## [1.1.4] - 2020-09-29
 ### Changed
 - Add load font-weight 500 in noto-sans-tc
