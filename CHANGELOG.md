@@ -5,9 +5,12 @@
 ### Added
  
 ### Changed
-- Update reset-mixin: use inherit in font-style and font-weight, remove opacity-1 in disabled things
  
 ### Fixed
+
+## [1.1.6] - 2020-10-26
+### Changed
+- Update reset-mixin: use inherit in font-style and font-weight, remove opacity-1 in disabled things
 
 ## [1.1.5] - 2020-09-30
 ### Changed
