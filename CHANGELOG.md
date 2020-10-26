@@ -5,6 +5,7 @@
 ### Added
  
 ### Changed
+- Update reset-mixin: use inherit in font-style and font-weight, remove opacity-1 in disabled things
  
 ### Fixed
 
