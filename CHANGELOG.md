@@ -8,6 +8,10 @@
  
 ### Fixed
 
+## [1.1.7] - 2020-10-28
+### Added
+- Add icon link to html
+
 ## [1.1.6] - 2020-10-26
 ### Changed
 - Update reset-mixin: use inherit in font-style and font-weight, remove opacity-1 in disabled things
