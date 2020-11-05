@@ -5,6 +5,8 @@
 ### Added
  
 ### Changed
+- Remove reset-img mixin
+- add line-height style in reset-button mixin
  
 ### Fixed
 
