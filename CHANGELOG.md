@@ -5,10 +5,13 @@
 ### Added
  
 ### Changed
-- Remove reset-img mixin
-- add line-height style in reset-button mixin
  
 ### Fixed
+
+## [1.1.8] - 2020-11-05
+### Changed
+- Remove reset-img mixin
+- add line-height style in reset-button mixin
 
 ## [1.1.7] - 2020-10-28
 ### Added
