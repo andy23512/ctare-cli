@@ -8,6 +8,10 @@
  
 ### Fixed
 
+## [1.1.10] - 2020-11-25
+### Fixed
+- Vue3 project not updated bug
+
 ## [1.1.9] - 2020-11-25
 ### Changed
 - Remove min-width of .container
