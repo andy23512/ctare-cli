@@ -5,6 +5,8 @@
 ### Added
  
 ### Changed
+- Remove min-width of .container
+- Adjust min-width of v-app
  
 ### Fixed
 

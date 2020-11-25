@@ -82,7 +82,7 @@ export default {
   margin-right: auto
   max-width: 1440px
   min-height: 100%
-  min-width: 375px
+  min-width: 360px
 
 @media (max-width: 1019px)
   #v-app
