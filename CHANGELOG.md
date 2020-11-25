@@ -5,10 +5,13 @@
 ### Added
  
 ### Changed
-- Remove min-width of .container
-- Adjust min-width of v-app
  
 ### Fixed
+
+## [1.1.9] - 2020-11-25
+### Changed
+- Remove min-width of .container
+- Adjust min-width of v-app
 
 ## [1.1.8] - 2020-11-05
 ### Changed
